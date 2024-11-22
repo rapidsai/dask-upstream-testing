@@ -8,7 +8,11 @@ jobs:
   test:
     name: "Test dask and distributed"
     # TODO: change to appropriate image
-    runs-on: ubuntu-latest
+    runs-on: "linux-amd64-gpu-v100-latest-1"
+    container:
+      image: rapidsai/distributed:24.12-cuda11.8.0-devel-ubuntu20.04-py3.12
+      env:
+        NVIDIA_VISIBLE_DEVICES: ${{ env.NVIDIA_VISIBLE_DEVICES }}
     steps:
     - name: Checkout ourselves
       uses: actions/checkout@v4
@@ -71,3 +75,4 @@ jobs:
       if: ${{ fromJSON(steps.check_run_needed.outputs.INFO).rerun }}
       run: |
         echo Running tests
+        nvidia-smi
