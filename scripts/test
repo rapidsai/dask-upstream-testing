@@ -7,7 +7,7 @@ dask_status=$?
 popd
 
 pushd distributed
-pytest distributed -v -m gpu
+pytest distributed -v -m gpu --runslow
 distributed_status=$?
 popd
 

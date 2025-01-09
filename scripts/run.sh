@@ -16,7 +16,10 @@ export PIP_PRE=true
 
 pip install --extra-index-url=https://pypi.anaconda.org/rapidsai-wheels-nightly/simple \
   "cudf-cu12" \
-  "dask-cudf-cu12"
+  "dask-cudf-cu12" \
+  "scipy" \
+  "ucx" \
+  "dask-cuda"
 
 echo "Installing dask@{DASK_VERSION}"
 
