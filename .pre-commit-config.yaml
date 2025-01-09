@@ -1,0 +1,18 @@
+# Copyright (c) 2025, NVIDIA CORPORATION.
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: |
+          (?x)^(
+            ^cpp/cmake/thirdparty/patches/.*|
+            ^python/cudf/cudf/tests/data/subword_tokenizer_data/.*
+          )
+      - id: end-of-file-fixer
+        exclude: |
+          (?x)^(
+            ^cpp/cmake/thirdparty/patches/.*|
+            ^python/cudf/cudf/tests/data/subword_tokenizer_data/.*
+          )
