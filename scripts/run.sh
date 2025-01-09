@@ -4,21 +4,19 @@
 # Install
 set -euo pipefail
 
-# RAPIDS_PY_CUDA_SUFFIX="$(rapids-wheel-ctk-name-gen ${RAPIDS_CUDA_VERSION})"
-RAPIDS_PY_CUDA_SUFFIX=12
+RAPIDS_PY_CUDA_SUFFIX="cu${RAPIDS_CUDA_VERSION:-12}"
+
 # TODO: set this to main once dask-cudf is compatible
 # DASK_VERSION=main
 DASK_VERSION=2024.12.1
 export PIP_YES=true
 export PIP_PRE=true
 
-# Should this use nightly wheels or rapids-download-wheels-from-s3?
-
 pip install --extra-index-url=https://pypi.anaconda.org/rapidsai-wheels-nightly/simple \
-  "cudf-cu12" \
-  "dask-cudf-cu12" \
+  "cudf-${RAPIDS_PY_CUDA_SUFFIX}" \
+  "dask-cudf-${RAPIDS_PY_CUDA_SUFFIX}" \
+  "ucx-py-${RAPIDS_PY_CUDA_SUFFIX}" \
   "scipy" \
-  "ucx" \
   "dask-cuda"
 
 echo "Installing dask@{DASK_VERSION}"
@@ -35,4 +33,4 @@ pip uninstall dask distributed
 cd dask && git clean -fdx && git checkout $DASK_VERSION && pip install -e .[test] && cd ..
 cd distributed && git clean -fdx && git checkout $DASK_VERSION && pip install -e . && cd ..
 
-./scripts/test
+./scripts/test.sh
