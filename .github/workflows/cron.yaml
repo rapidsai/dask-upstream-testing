@@ -14,10 +14,14 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       date: ${{ steps.date.outputs.date }}
+      branch: ${{ steps.branch.outputs.branch }}
     steps:
       - name: Get current date
         id: date
         run: echo name=date::$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
+      - name: Get current branch
+        id: branch
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
 
   dask-tests:
     needs: setup
@@ -28,7 +32,7 @@ jobs:
       # This selects "ARCH=amd64 + the latest supported Python + CUDA".
       matrix_filter: map(select(.ARCH == "amd64")) | group_by(.CUDA_VER|split(".")|map(tonumber)|.[0]) | map(max_by([(.PY_VER|split(".")|map(tonumber)), (.CUDA_VER|split(".")|map(tonumber))]))
       build_type: nightly
-      branch: main
+      branch: ${{ needs.setup.outputs.branch }}
       date: ${{ needs.setup.outputs.date }}
       sha: ${{ github.sha }}
       script: scripts/run.sh
