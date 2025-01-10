@@ -2,28 +2,33 @@
 name: Test dask-upstream
 
 on:
-  workflow_dispatch:
-    inputs:
-      branch:
-        required: true
-        type: string
-      date:
-        required: true
-        type: string
-      sha:
-        required: true
-        type: string
-
+  schedule:
+    # 18:15 UTC daily.
+    # We want to run after the nightly pipeline finishes.
+    # https://github.com/rapidsai/workflows/blob/main/.github/workflows/nightly-pipeline-trigger.yaml is
+    # currently set to 5:00 UTC and takes ~12 hours
+    - cron: "15 18 * * *"
+  
 jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      date: ${{ steps.date.outputs.date }}
+    steps:
+      - name: Get current date
+        id: date
+        run: echo name=date::$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
+
   dask-tests:
-      # run the Dask and Distributed unit tests
-      secrets: inherit
-      uses: rapidsai/shared-workflows/.github/workflows/wheels-test.yaml@branch-25.02
-      with:
-        # This selects "ARCH=amd64 + the latest supported Python + CUDA".
-        matrix_filter: map(select(.ARCH == "amd64")) | group_by(.CUDA_VER|split(".")|map(tonumber)|.[0]) | map(max_by([(.PY_VER|split(".")|map(tonumber)), (.CUDA_VER|split(".")|map(tonumber))]))
-        build_type: nightly
-        branch: ${{ inputs.branch }}
-        date: ${{ inputs.date }}
-        sha: ${{ inputs.sha }}
-        script: scripts/run.sh
+    needs: setup
+    # run the Dask and Distributed unit tests
+    secrets: inherit
+    uses: rapidsai/shared-workflows/.github/workflows/wheels-test.yaml@branch-25.02
+    with:
+      # This selects "ARCH=amd64 + the latest supported Python + CUDA".
+      matrix_filter: map(select(.ARCH == "amd64")) | group_by(.CUDA_VER|split(".")|map(tonumber)|.[0]) | map(max_by([(.PY_VER|split(".")|map(tonumber)), (.CUDA_VER|split(".")|map(tonumber))]))
+      build_type: nightly
+      branch: main
+      date: ${{ needs.setup.outputs.date }}
+      sha: ${{ github.sha }}
+      script: scripts/run.sh
