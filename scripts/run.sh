@@ -4,7 +4,10 @@
 # Install
 set -euo pipefail
 
-RAPIDS_PY_CUDA_SUFFIX="cu${RAPIDS_CUDA_VERSION:-12}"
+
+# RAPIDS_CUDA_VERSION is like 12.15.1
+# We want cu12
+RAPIDS_PY_CUDA_SUFFIX=$(echo "cu${RAPIDS_CUDA_VERSION:-12.15.1}" | cut -d '.' -f 1)
 
 # TODO: set this to main once dask-cudf is compatible
 # DASK_VERSION=main
