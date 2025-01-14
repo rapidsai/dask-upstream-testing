@@ -8,6 +8,7 @@ on:
     # https://github.com/rapidsai/workflows/blob/main/.github/workflows/nightly-pipeline-trigger.yaml is
     # currently set to 5:00 UTC and takes ~12 hours
     - cron: "15 18 * * *"
+  workflow_dispatch: {}
   
 jobs:
   setup:
