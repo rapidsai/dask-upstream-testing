@@ -1,78 +1,38 @@
-on:
-  # TODO: change to cron-based schedule one this is working
-  push:
-    branches:
-      - main
+# Based off https://github.com/rapidsai/cudf/blob/branch-25.02/.github/workflows/pandas-tests.yaml
+name: Test dask-upstream
 
+on:
+  schedule:
+    # 18:15 UTC daily.
+    # We want to run after the nightly pipeline finishes.
+    # https://github.com/rapidsai/workflows/blob/main/.github/workflows/nightly-pipeline-trigger.yaml is
+    # currently set to 5:00 UTC and takes ~12 hours
+    - cron: "15 18 * * *"
+  
 jobs:
-  test:
-    name: "Test dask and distributed"
-    # TODO: change to appropriate image
-    runs-on: "linux-amd64-gpu-v100-latest-1"
-    container:
-      image: rapidsai/distributed:24.12-cuda11.8.0-devel-ubuntu20.04-py3.12
-      env:
-        NVIDIA_VISIBLE_DEVICES: ${{ env.NVIDIA_VISIBLE_DEVICES }}
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      date: ${{ steps.date.outputs.date }}
+      branch: ${{ steps.branch.outputs.branch }}
     steps:
-    - name: Checkout ourselves
-      uses: actions/checkout@v4
-      with:
-        path: utils
-    - name: Checkout dask
-      uses: actions/checkout@v4
-      with:
-        repository: dask/dask
-        path: dask
-    - name: Checkout distributed
-      uses: actions/checkout@v4
-      with:
-        repository: dask/distributed
-        path: distributed
-    - name: Run
-      run: |
-        (cd dask; git rev-parse HEAD;
-         cd ../distributed; git rev-parse HEAD) | tee commit-hashes.txt
-    - name: Upload commit hashes
-      uses: actions/upload-artifact@v4
-      with:
-        name: commit-hashes.txt
-        path: commit-hashes.txt
-    - name: Setup python
-      uses: actions/setup-python@v5
-      with:
-        python-version: 3.12
-    - name: Get last artifact URL from last run
-      id: get_last_id
-      run: |
-        pip install requests
-        VAL=$(python utils/get.py)
-        echo "${VAL}"
-        echo "${VAL}" >> $GITHUB_OUTPUT
-    - name: Download artifact from last run if exists
-      if: ${{ fromJSON(steps.get_last_id.outputs.INFO).exists }}
-      continue-on-error: true
-      uses: actions/download-artifact@v4
-      with:
-        name: commit-hashes.txt
-        path: previous-run
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        run-id: ${{ fromJSON(steps.get_last_id.outputs.INFO).id }}
-    - name: Check if test run is needed
-      id: check_run_needed
-      run: |
-        ls -l previous-run/
-        if [ ! -f previous-run/commit-hashes.txt ]; then
-          echo "No previous run hashes, need to re-run"
-          echo 'INFO={"rerun": true}' >> $GITHUB_OUTPUT
-        elif cmp -s commit-hashes.txt previous-run/commit-hashes.txt; then
-          echo "Previous run hash same as this one, no need to re-run"
-          echo 'INFO={"rerun": false}' >> $GITHUB_OUTPUT
-        else
-          echo "Previous run hash different, need to re-run"
-          echo 'INFO={"rerun": true}' >> $GITHUB_OUTPUT
-        fi
-    - name: Run tests
-      if: ${{ fromJSON(steps.check_run_needed.outputs.INFO).rerun }}
-      run: |
-        echo Running tests
-        nvidia-smi
+      - name: Get current date
+        id: date
+        run: echo name=date::$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
+      - name: Get current branch
+        id: branch
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+
+  dask-tests:
+    needs: setup
+    # run the Dask and Distributed unit tests
+    secrets: inherit
+    uses: rapidsai/shared-workflows/.github/workflows/wheels-test.yaml@branch-25.02
+    with:
+      # This selects "ARCH=amd64 + the latest supported Python + CUDA".
+      matrix_filter: map(select(.ARCH == "amd64")) | group_by(.CUDA_VER|split(".")|map(tonumber)|.[0]) | map(max_by([(.PY_VER|split(".")|map(tonumber)), (.CUDA_VER|split(".")|map(tonumber))]))
+      build_type: nightly
+      branch: ${{ needs.setup.outputs.branch }}
+      date: ${{ needs.setup.outputs.date }}
+      sha: ${{ github.sha }}
+      script: scripts/run.sh
