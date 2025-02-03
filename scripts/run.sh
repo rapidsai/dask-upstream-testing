@@ -11,7 +11,7 @@ RAPIDS_PY_CUDA_SUFFIX=$(echo "cu${RAPIDS_CUDA_VERSION:-12.15.1}" | cut -d '.' -f
 
 # TODO: set this to main once dask-cudf is compatible
 # DASK_VERSION=main
-DASK_VERSION=2024.12.1
+DASK_VERSION=main
 export PIP_YES=true
 export PIP_PRE=true
 
@@ -33,7 +33,7 @@ if [ ! -d "distributed" ]; then
 fi
 
 pip uninstall dask distributed
-cd dask && git clean -fdx && git checkout $DASK_VERSION && pip install -e .[test] && cd ..
-cd distributed && git clean -fdx && git checkout $DASK_VERSION && pip install -e . && cd ..
+cd dask &&  pip install -e .[test] && cd ..
+cd distributed && pip install -e . && cd ..
 
 ./scripts/test.sh
