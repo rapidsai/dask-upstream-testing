@@ -25,11 +25,11 @@ pip install --extra-index-url=https://pypi.anaconda.org/rapidsai-wheels-nightly/
 echo "Installing dask@{DASK_VERSION}"
 
 if [ ! -d "dask" ]; then
-    git clone https://github.com/dask/dask
+    git clone https://github.com/dask/dask --depth 1 --branch $DASK_VERSION
 fi
 
 if [ ! -d "distributed" ]; then
-    git clone https://github.com/dask/distributed
+    git clone https://github.com/dask/distributed --depth 1 --branch $DASK_VERSION
 fi
 
 pip uninstall dask distributed
