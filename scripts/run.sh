@@ -11,7 +11,7 @@ RAPIDS_PY_CUDA_SUFFIX=$(echo "cu${RAPIDS_CUDA_VERSION:-12.15.1}" | cut -d '.' -f
 
 # TODO: set this to main once dask-cudf is compatible
 # DASK_VERSION=main
-DASK_VERSION=2024.12.1
+DASK_VERSION=main
 export PIP_YES=true
 export PIP_PRE=true
 
@@ -25,15 +25,15 @@ pip install --extra-index-url=https://pypi.anaconda.org/rapidsai-wheels-nightly/
 echo "Installing dask@{DASK_VERSION}"
 
 if [ ! -d "dask" ]; then
-    git clone https://github.com/dask/dask
+    git clone https://github.com/dask/dask --depth 1 --branch $DASK_VERSION
 fi
 
 if [ ! -d "distributed" ]; then
-    git clone https://github.com/dask/distributed
+    git clone https://github.com/dask/distributed --depth 1 --branch $DASK_VERSION
 fi
 
 pip uninstall dask distributed
-cd dask && git clean -fdx && git checkout $DASK_VERSION && pip install -e .[test] && cd ..
-cd distributed && git clean -fdx && git checkout $DASK_VERSION && pip install -e . && cd ..
+cd dask &&  pip install -e .[test] && cd ..
+cd distributed && pip install -e . && cd ..
 
 ./scripts/test.sh
