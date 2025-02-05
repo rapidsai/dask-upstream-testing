@@ -24,16 +24,22 @@ pip install --extra-index-url=https://pypi.anaconda.org/rapidsai-wheels-nightly/
 
 echo "Installing dask@{DASK_VERSION}"
 
+# depth needs to be sufficient to reach the last tag, so that the package
+# versions are set correctly
 if [ ! -d "dask" ]; then
-    git clone https://github.com/dask/dask --depth 1 --branch $DASK_VERSION
+    git clone https://github.com/dask/dask --depth 100 --branch $DASK_VERSION
 fi
 
 if [ ! -d "distributed" ]; then
-    git clone https://github.com/dask/distributed --depth 1 --branch $DASK_VERSION
+    git clone https://github.com/dask/distributed --depth 100 --branch $DASK_VERSION
 fi
 
+# Install everything, including any new dependencies
 pip uninstall dask distributed
-cd dask &&  pip install -e .[test] && cd ..
-cd distributed && pip install -e . && cd ..
+pip install -e ./dask[test]
+pip install -e ./distributed
+
+echo "[Setup done]"
+pip list
 
 ./scripts/test.sh
