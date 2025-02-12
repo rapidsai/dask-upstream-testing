@@ -2,6 +2,8 @@
 
 This repository contains the scripts to run Dask's `gpu`-marked tests on a schedule.
 
+In addition, we run some light downstream tests, as an early warning check for breaking in downstream packages like cuDF, dask-cuDF, and cuML.
+
 ## Version Policy
 
 The primary goal here is to quickly identify breakages in tests defined in `dask/dask` and `dask/distributed`, so we'll use the latest `main` from each of those.
