@@ -19,6 +19,7 @@ pip install --extra-index-url=https://pypi.anaconda.org/rapidsai-wheels-nightly/
   "cudf-${RAPIDS_PY_CUDA_SUFFIX}" \
   "dask-cudf-${RAPIDS_PY_CUDA_SUFFIX}" \
   "ucx-py-${RAPIDS_PY_CUDA_SUFFIX}" \
+  "cuml-${RAPIDS_PY_CUDA_SUFFIX}" \
   "scipy" \
   "dask-cuda"
 

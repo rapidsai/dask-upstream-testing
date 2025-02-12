@@ -9,7 +9,7 @@ on:
     # currently set to 5:00 UTC and takes ~12 hours
     - cron: "15 18 * * *"
   workflow_dispatch: {}
-  
+
 jobs:
   setup:
     runs-on: ubuntu-latest
