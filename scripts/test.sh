@@ -3,7 +3,7 @@
 
 echo "[testing dask-cudf]"
 pushd cudf/python/dask_cudf
-pytest dask -v
+pytest dask_cudf -v
 dask_cudf_status=$?
 popd
 
