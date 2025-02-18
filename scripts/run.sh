@@ -46,8 +46,9 @@ fi
 
 # Install everything, including any new dependencies
 pip uninstall dask distributed
-pip install -e ./dask[test]
-pip install -e ./distributed
+pip install pandas[test] pytest pytest-cov pytest-mock pytest-rerunfailures pytest-timeout pytest-xdist pre-commit
+pip install --no-deps -e ./dask
+pip install --no-deps -e ./distributed
 
 echo "[Setup done]"
 pip list
