@@ -16,3 +16,39 @@ repos:
             ^cpp/cmake/thirdparty/patches/.*|
             ^python/cudf/cudf/tests/data/subword_tokenizer_data/.*
           )
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.3.0
+    hooks:
+      - id: codespell
+        exclude: |
+          (?x)^(
+            .*test.*|
+            ^CHANGELOG.md$
+          )
+  # Include this if we add any Python code
+  # - repo: https://github.com/astral-sh/ruff-pre-commit
+  #   rev: v0.9.3
+  #   hooks:
+  #     - id: ruff
+  #       args: ["--fix"]
+  #     - id: ruff-format
+  - repo: https://github.com/rapidsai/pre-commit-hooks
+    rev: v0.6.0
+    hooks:
+      - id: verify-copyright
+        exclude: |
+          (?x)^(
+            cpp/include/cudf_test/cxxopts[.]hpp$|
+            cpp/src/io/parquet/ipc/Message_generated[.]h$|
+            cpp/src/io/parquet/ipc/Schema_generated[.]h$|
+            cpp/cmake/Modules/FindCUDAToolkit[.]cmake$
+          )
+      - id: verify-alpha-spec
+      - id: verify-codeowners
+        args: [--fix, --project-prefix=cudf]
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
+        args: ["--severity=warning"]
+        files: ^scripts/
