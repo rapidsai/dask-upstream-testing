@@ -31,6 +31,13 @@ if [ ! -d "cudf" ]; then
     git clone https://github.com/rapidsai/cudf.git --branch $CUDF_VERSION
 fi
 
+# Clone cudf repo (need dask_cudf tests)
+echo "Cloning cudf@{$CUDF_VERSION}"
+
+if [ ! -d "dask-cuda" ]; then
+    git clone https://github.com/rapidsai/dask-cuda.git --branch $CUDF_VERSION
+fi
+
 echo "Installing dask@{$DASK_VERSION}"
 
 # depth needs to be sufficient to reach the last tag, so that the package

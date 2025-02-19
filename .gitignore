@@ -1,3 +1,4 @@
 dask
 distributed
 cudf
+dask-cuda
