@@ -1,5 +1,7 @@
 # Dask Upstream Testing
 
+[![Test dask-upstream](https://github.com/rapidsai/dask-upstream-testing/actions/workflows/cron.yaml/badge.svg)](https://github.com/rapidsai/dask-upstream-testing/actions/workflows/cron.yaml)
+
 This repository contains the scripts to run Dask's `gpu`-marked tests on a schedule.
 
 ## Version Policy
