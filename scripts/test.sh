@@ -2,16 +2,16 @@
 # SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION & AFFILIATES.
 
 echo "[testing dask]"
-pushd dask
+pushd dask || exit
 pytest dask -v -m gpu
 dask_status=$?
-popd
+popd || exit
 
 echo "[testing distributed]"
-pushd distributed
+pushd distributed || exit
 pytest distributed -v -m gpu --runslow
 distributed_status=$?
-popd
+popd || exit
 
 if [ $dask_status -ne 0 ] || [ $distributed_status -ne 0 ]; then
     echo "Tests faild"
