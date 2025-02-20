@@ -11,29 +11,59 @@ DASK_VERSION=main
 uv pip install --extra-index-url=https://pypi.anaconda.org/rapidsai-wheels-nightly/simple \
   --overrides=requirements/overrides.txt \
   --prerelease allow \
+  "cuml-${RAPIDS_PY_CUDA_SUFFIX}[test]" \
   "cudf-${RAPIDS_PY_CUDA_SUFFIX}" \
   "dask-cudf-${RAPIDS_PY_CUDA_SUFFIX}" \
+  "raft-dask-${RAPIDS_PY_CUDA_SUFFIX}" \
   "ucx-py-${RAPIDS_PY_CUDA_SUFFIX}" \
   "ucxx-${RAPIDS_PY_CUDA_SUFFIX}" \
   "scipy" \
   "dask-cuda"
 
+# packages holds all the downstream and upstream dependencies.
+# we want to avoid directories with the same name as packages
+# in the working directory
+mkdir -p packages
+
 # Clone cudf repo for tests
 CUDF_VERSION="branch-25.04"
+
 cudf_commit=$(./scripts/check-version.py cudf)
 
 if [ ! -d "cudf" ]; then
     echo "Cloning cudf@{$CUDF_VERSION}"
-    git clone https://github.com/rapidsai/cudf.git --branch $CUDF_VERSION
+    git clone https://github.com/rapidsai/cudf.git --branch $CUDF_VERSION packages
 fi
 
-pushd cudf
+pushd packages/cudf
 git checkout $cudf_commit
+popd
+
+cuml_commit=$(./scripts/check-version.py cuml)
+
+if [ ! -d "cuml" ]; then
+    echo "Cloning cuml@{$CUDF_VERSION}"
+    git clone https://github.com/rapidsai/cuml.git --branch $CUDF_VERSION packages
+fi
+
+pushd packages/cuml
+git checkout $cuml_commit
+popd
+
+raft_commit=$(./scripts/check-version.py raft_dask)
+
+if [ ! -d "raft" ]; then
+    echo "Cloning raft@{$CUDF_VERSION}"
+    git clone https://github.com/rapidsai/raft.git --branch $CUDF_VERSION packages
+fi
+
+pushd packages/raft
+git checkout $raft_commit
 popd
 
 if [ ! -d "dask-cuda" ]; then
     echo "Cloning cudf@{$CUDF_VERSION}"
-    git clone https://github.com/rapidsaicudf_commit/dask-cuda.git --branch $CUDF_VERSION
+    git clone https://github.com/rapidsaicudf_commit/dask-cuda.git --branch $CUDF_VERSION packages
 fi
 
 # Clone dask-cuda for tests
@@ -42,7 +72,7 @@ fi
 
 # dask_cuda_commit=$(./scripts/check-version.py dask_cuda)
 
-pushd dask-cuda
+pushd packages/dask-cuda
 git checkout $CUDF_VERSION
 popd
 
@@ -50,24 +80,24 @@ popd
 # versions are set correctly
 if [ ! -d "dask" ]; then
     echo "Cloning dask@{$DASK_VERSION}"
-    git clone https://github.com/dask/dask --depth 100 --branch $DASK_VERSION
+    git clone https://github.com/dask/dask --depth 100 --branch $DASK_VERSION packages
 fi
 
 if [ ! -d "distributed" ]; then
     echo "Cloning dask@{$DASK_VERSION}"
-    git clone https://github.com/dask/distributed --depth 100 --branch $DASK_VERSION
+    git clone https://github.com/dask/distributed --depth 100 --branch $DASK_VERSION packages
 fi
 
-pushd dask
+pushd packages/dask
 git checkout $DASK_VERSION
 popd
 
-pushd distributed
+pushd packages/distributed
 git checkout $DASK_VERSION
 popd
 
 # Finally, ensure that
-uv pip install --no-deps -e ./dask ./distributed
+uv pip install --no-deps -e ./packages/dask ./packages/distributed
 
 echo "[Setup done]"
 uv pip list

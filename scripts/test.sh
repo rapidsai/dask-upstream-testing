@@ -2,20 +2,27 @@
 # SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION & AFFILIATES.
 
 if [ $# -eq 0 ]; then
+    run_cuml=true
     run_dask=true
     run_dask_cuda=true
     run_dask_cudf=true
     run_distributed=true
+    run_raft_dask=true
 else
+    run_cuml=false
     run_dask=false
     run_dask_cuda=false
     run_dask_cudf=false
     run_distributed=false
+    run_raft_dask=false
 fi
 
 # Parse command-line arguments
 while [[ $# -gt 0 ]]; do
     case "$1" in
+        --cuml-only)
+            run_cuml=true
+            ;;
         --dask-only)
             run_dask=true
             ;;
@@ -27,6 +34,9 @@ while [[ $# -gt 0 ]]; do
             ;;
         --distributed-only)
             run_distributed=true
+            ;;
+        --raft-dask-only)
+            run_raft_dask=true
             ;;
         --help)
             echo "Usage: $0 [--dask-only] [--distributed-only] [--dask-cuda-only] [--dask-cudf-only]"
@@ -42,18 +52,28 @@ done
 
 exit_code=0;
 
-# --- dask-cudf ---
-if $run_dask_cudf; then
+# --- cuml ---
+if $run_cuml; then
 
-    echo "[testing dask-cudf]"
-    pushd cudf/python/dask_cudf || exit 1
-    pytest -v dask_cudf
+    echo "[testing cuml]"
+    pytest -v packages/cuml/python/cuml/cuml/tests/dask
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
     fi
 
-    popd || exit 1
+fi
+
+
+# --- dask-cudf ---
+if $run_dask_cudf; then
+
+    echo "[testing dask-cudf]"
+    pytest -v packages/cudf/python/dask_cudf
+
+    if [[ $? -ne 0 ]]; then
+        exit_code=1
+    fi
 
 fi
 
@@ -61,14 +81,12 @@ fi
 
 if $run_dask_cuda; then
     echo "[testing dask-cuda]"
-    pushd dask-cuda/dask_cuda/tests || exit 1
-    pytest -v .
+    pytest -v packages/dask-cuda/dask_cuda/tests
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
     fi
 
-    popd || exit 1
 fi
 
 # --- dask ---
@@ -76,30 +94,38 @@ fi
 if $run_dask; then
 
     echo "[testing dask]"
-    pushd dask/dask || exit 1
-    pytest -v -m gpu .
+    pytest -v -m gpu packages/dask/dask
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
     fi
 
-    popd || exit 1
+fi
+
+# --- raft-dask ---
+if $run_raft_dask; then
+
+    echo "[testing raft-dask]"
+    pytest -v packages/raft/python/raft-dask/raft_dask/tests
+
+    if [[ $? -ne 0 ]]; then
+        exit_code=1
+    fi
 
 fi
+
+
 
 # --- distributed ---
 
 if $run_distributed; then
 
     echo "[testing distributed]"
-    pushd distributed || exit 1
-    pytest -v -m gpu --runslow distributed
+    pytest -v -m gpu --runslow packages/distributed/distributed
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
     fi
-
-    popd || exit 1
 
 fi
 
