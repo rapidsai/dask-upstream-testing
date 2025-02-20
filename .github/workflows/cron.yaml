@@ -3,11 +3,11 @@ name: Test dask-upstream
 
 on:
   schedule:
-    # 18:15 UTC daily.
-    # We want to run after the nightly pipeline finishes.
+    # 06:15 and 08:15 UTC daily.
+    # We want at least one one run after the nightly pipeline finishes.
     # https://github.com/rapidsai/workflows/blob/main/.github/workflows/nightly-pipeline-trigger.yaml is
     # currently set to 5:00 UTC and takes ~12 hours
-    - cron: "15 18 * * *"
+    - cron: "15 06,18 * * *"
   workflow_dispatch: {}
 
 jobs:
