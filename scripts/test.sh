@@ -76,8 +76,8 @@ fi
 if $run_dask; then
 
     echo "[testing dask]"
-    pushd dask || exit 1
-    pytest -v -m gpu dask
+    pushd dask/dask || exit 1
+    pytest -v -m gpu .
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
@@ -87,7 +87,7 @@ if $run_dask; then
 
 fi
 
-# --- dask ---
+# --- distributed ---
 
 if $run_distributed; then
 

@@ -66,5 +66,8 @@ pushd distributed
 git checkout $DASK_VERSION
 popd
 
+# Finally, ensure that
+uv pip install --no-deps -e ./dask ./distributed
+
 echo "[Setup done]"
 uv pip list
