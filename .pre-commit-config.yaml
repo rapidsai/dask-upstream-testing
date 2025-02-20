@@ -25,13 +25,12 @@ repos:
             .*test.*|
             ^CHANGELOG.md$
           )
-  # Include this if we add any Python code
-  # - repo: https://github.com/astral-sh/ruff-pre-commit
-  #   rev: v0.9.3
-  #   hooks:
-  #     - id: ruff
-  #       args: ["--fix"]
-  #     - id: ruff-format
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.3
+    hooks:
+      - id: ruff
+        args: ["--fix"]
+      - id: ruff-format
   - repo: https://github.com/rapidsai/pre-commit-hooks
     rev: v0.6.0
     hooks:
