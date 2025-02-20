@@ -2,6 +2,10 @@
 # SPDX-FileCopyrightText: Copyright (c) 2025, NVIDIA CORPORATION & AFFILIATES.
 set -euo pipefail
 
+if ! command -v uv > /dev/null; then
+    source $HOME/.local/bin/env
+fi
+
 # RAPIDS_CUDA_VERSION is like 12.15.1
 # We want cu12
 RAPIDS_PY_CUDA_SUFFIX=$(echo "cu${RAPIDS_CUDA_VERSION:-12.15.1}" | cut -d '.' -f 1)
