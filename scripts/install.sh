@@ -41,7 +41,6 @@ if [ ! -d "packages/cudf" ]; then
 fi
 
 pushd packages/cudf
-git fetch
 git checkout $cudf_commit
 popd
 
@@ -71,7 +70,7 @@ popd
 
 if [ ! -d "packages/dask-cuda" ]; then
     echo "Cloning cudf@{$CUDF_VERSION}"
-    git clone https://github.com/rapidsaicudf_commit/dask-cuda.git --branch $CUDF_VERSION packages/dask-cuda
+    git clone https://github.com/rapidsai/dask-cuda.git --branch $CUDF_VERSION packages/dask-cuda
 fi
 
 # Clone dask-cuda for tests
