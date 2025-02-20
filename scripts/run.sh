@@ -19,34 +19,36 @@ pip install --extra-index-url=https://pypi.anaconda.org/rapidsai-wheels-nightly/
   "cudf-${RAPIDS_PY_CUDA_SUFFIX}" \
   "dask-cudf-${RAPIDS_PY_CUDA_SUFFIX}" \
   "ucx-py-${RAPIDS_PY_CUDA_SUFFIX}" \
+  "ucxx-${RAPIDS_PY_CUDA_SUFFIX}" \
   "scipy" \
   "dask-cuda"
 
 
-# Clone cudf repo (need dask_cudf tests)
+# Clone cudf repo for tests
 CUDF_VERSION="branch-25.04"
-echo "Cloning cudf@{$CUDF_VERSION}"
 
 if [ ! -d "cudf" ]; then
+    echo "Cloning cudf@{$CUDF_VERSION}"
     git clone https://github.com/rapidsai/cudf.git --branch $CUDF_VERSION
 fi
 
-# Clone cudf repo (need dask_cudf tests)
-echo "Cloning cudf@{$CUDF_VERSION}"
+# Clone dask-cuda for tests
 
 if [ ! -d "dask-cuda" ]; then
+    echo "Cloning cudf@{$CUDF_VERSION}"
     git clone https://github.com/rapidsai/dask-cuda.git --branch $CUDF_VERSION
 fi
 
-echo "Installing dask@{$DASK_VERSION}"
 
 # depth needs to be sufficient to reach the last tag, so that the package
 # versions are set correctly
 if [ ! -d "dask" ]; then
+    echo "Cloning dask@{$DASK_VERSION}"
     git clone https://github.com/dask/dask --depth 100 --branch $DASK_VERSION
 fi
 
 if [ ! -d "distributed" ]; then
+    echo "Cloning dask@{$DASK_VERSION}"
     git clone https://github.com/dask/distributed --depth 100 --branch $DASK_VERSION
 fi
 

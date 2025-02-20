@@ -61,8 +61,8 @@ fi
 
 if $run_dask_cuda; then
     echo "[testing dask-cuda]"
-    pushd dask-cuda || exit 1
-    pytest -v dask_cuda
+    pushd dask-cuda/dask_cuda/tests || exit 1
+    pytest -v .
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
