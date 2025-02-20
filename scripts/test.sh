@@ -56,7 +56,7 @@ exit_code=0;
 if $run_cuml; then
 
     echo "[testing cuml]"
-    pytest -v --quick_run --import-mode importlib packages/cuml/python/cuml/cuml/tests/dask
+    pytest -v --timeout=120 --quick_run --import-mode importlib packages/cuml/python/cuml/cuml/tests/dask
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
@@ -69,7 +69,7 @@ fi
 if $run_dask_cudf; then
 
     echo "[testing dask-cudf]"
-    pytest -v packages/cudf/python/dask_cudf
+    pytest -v --timeout=120 packages/cudf/python/dask_cudf
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
@@ -81,7 +81,7 @@ fi
 
 if $run_dask_cuda; then
     echo "[testing dask-cuda]"
-    pytest -v packages/dask-cuda/dask_cuda/tests
+    pytest -v --timeout=120 packages/dask-cuda/dask_cuda/tests
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
@@ -94,7 +94,7 @@ fi
 if $run_dask; then
 
     echo "[testing dask]"
-    pytest -v -m gpu packages/dask/dask
+    pytest -v --timeout=120 -m gpu packages/dask/dask
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
@@ -106,7 +106,7 @@ fi
 if $run_raft_dask; then
 
     echo "[testing raft-dask]"
-    pytest -v packages/raft/python/raft-dask/raft_dask/tests
+    pytest -v --timeout=120 packages/raft/python/raft-dask/raft_dask/tests
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
@@ -121,7 +121,7 @@ fi
 if $run_distributed; then
 
     echo "[testing distributed]"
-    pytest -v -m gpu --runslow packages/distributed/distributed
+    pytest -v --timeout=120 -m gpu --runslow packages/distributed/distributed
 
     if [[ $? -ne 0 ]]; then
         exit_code=1

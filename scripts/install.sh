@@ -16,7 +16,8 @@ uv pip install --extra-index-url=https://pypi.anaconda.org/rapidsai-wheels-night
   "ucx-py-${RAPIDS_PY_CUDA_SUFFIX}" \
   "ucxx-${RAPIDS_PY_CUDA_SUFFIX}" \
   "scipy" \
-  "dask-cuda"
+  "dask-cuda" \
+  "pytest-timeout"
 
 # packages holds all the downstream and upstream dependencies.
 # we want to avoid directories with the same name as packages
