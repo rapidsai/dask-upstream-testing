@@ -6,11 +6,7 @@ set -euo pipefail
 # We want cu12
 RAPIDS_PY_CUDA_SUFFIX=$(echo "cu${RAPIDS_CUDA_VERSION:-12.15.1}" | cut -d '.' -f 1)
 
-# TODO: set this to main once dask-cudf is compatible
-# DASK_VERSION=main
 DASK_VERSION=main
-export PIP_YES=true
-export PIP_PRE=true
 
 # Try
 uv pip install --extra-index-url=https://pypi.anaconda.org/rapidsai-wheels-nightly/simple \
