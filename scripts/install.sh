@@ -8,7 +8,6 @@ RAPIDS_PY_CUDA_SUFFIX=$(echo "cu${RAPIDS_CUDA_VERSION:-12.15.1}" | cut -d '.' -f
 
 DASK_VERSION=main
 
-# Try
 uv pip install --extra-index-url=https://pypi.anaconda.org/rapidsai-wheels-nightly/simple \
   --overrides=requirements/overrides.txt \
   --prerelease allow \
