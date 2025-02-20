@@ -56,7 +56,7 @@ exit_code=0;
 if $run_cuml; then
 
     echo "[testing cuml]"
-    pytest -v --quick_run packages/cuml/python/cuml/cuml/tests/dask
+    pytest -v --quick_run --import-mode importlib packages/cuml/python/cuml/cuml/tests/dask
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
