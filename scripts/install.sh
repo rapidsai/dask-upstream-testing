@@ -6,8 +6,6 @@ set -euo pipefail
 # We want cu12
 RAPIDS_PY_CUDA_SUFFIX=$(echo "cu${RAPIDS_CUDA_VERSION:-12.15.1}" | cut -d '.' -f 1)
 
-DASK_VERSION=main
-
 uv pip install --extra-index-url=https://pypi.anaconda.org/rapidsai-wheels-nightly/simple \
   --overrides=requirements/overrides.txt \
   --prerelease allow \
@@ -79,21 +77,21 @@ popd
 # depth needs to be sufficient to reach the last tag, so that the package
 # versions are set correctly
 if [ ! -d "dask" ]; then
-    echo "Cloning dask@{$DASK_VERSION}"
-    git clone https://github.com/dask/dask --depth 100 --branch $DASK_VERSION packages
+    echo "Cloning dask@main"
+    git clone https://github.com/dask/dask --depth 100 packages
 fi
 
 if [ ! -d "distributed" ]; then
-    echo "Cloning dask@{$DASK_VERSION}"
-    git clone https://github.com/dask/distributed --depth 100 --branch $DASK_VERSION packages
+    echo "Cloning distributed@main"
+    git clone https://github.com/dask/distributed --depth 100 packages
 fi
 
 pushd packages/dask
-git checkout $DASK_VERSION
+git checkout main
 popd
 
 pushd packages/distributed
-git checkout $DASK_VERSION
+git checkout main
 popd
 
 # Finally, ensure that
