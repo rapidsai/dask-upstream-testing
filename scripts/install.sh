@@ -35,40 +35,43 @@ CUDF_VERSION="branch-25.04"
 
 cudf_commit=$(./scripts/check-version.py cudf)
 
-if [ ! -d "cudf" ]; then
+if [ ! -d "packages/cudf" ]; then
     echo "Cloning cudf@{$CUDF_VERSION}"
-    git clone https://github.com/rapidsai/cudf.git --branch $CUDF_VERSION packages
+    git clone https://github.com/rapidsai/cudf.git --branch $CUDF_VERSION packages/cudf
 fi
 
 pushd packages/cudf
+git fetch
 git checkout $cudf_commit
 popd
 
 cuml_commit=$(./scripts/check-version.py cuml)
 
-if [ ! -d "cuml" ]; then
+if [ ! -d "packages/cuml" ]; then
     echo "Cloning cuml@{$CUDF_VERSION}"
-    git clone https://github.com/rapidsai/cuml.git --branch $CUDF_VERSION packages
+    git clone https://github.com/rapidsai/cuml.git --branch $CUDF_VERSION packages/cuml
 fi
 
 pushd packages/cuml
+git fetch
 git checkout $cuml_commit
 popd
 
 raft_commit=$(./scripts/check-version.py raft_dask)
 
-if [ ! -d "raft" ]; then
+if [ ! -d "packages/raft" ]; then
     echo "Cloning raft@{$CUDF_VERSION}"
-    git clone https://github.com/rapidsai/raft.git --branch $CUDF_VERSION packages
+    git clone https://github.com/rapidsai/raft.git --branch $CUDF_VERSION packages/raft
 fi
 
 pushd packages/raft
+git fetch
 git checkout $raft_commit
 popd
 
-if [ ! -d "dask-cuda" ]; then
+if [ ! -d "packages/dask-cuda" ]; then
     echo "Cloning cudf@{$CUDF_VERSION}"
-    git clone https://github.com/rapidsaicudf_commit/dask-cuda.git --branch $CUDF_VERSION packages
+    git clone https://github.com/rapidsaicudf_commit/dask-cuda.git --branch $CUDF_VERSION packages/dask-cuda
 fi
 
 # Clone dask-cuda for tests
@@ -78,26 +81,29 @@ fi
 # dask_cuda_commit=$(./scripts/check-version.py dask_cuda)
 
 pushd packages/dask-cuda
+git fetch
 git checkout $CUDF_VERSION
 popd
 
 # depth needs to be sufficient to reach the last tag, so that the package
 # versions are set correctly
-if [ ! -d "dask" ]; then
+if [ ! -d "packages/dask" ]; then
     echo "Cloning dask@main"
-    git clone https://github.com/dask/dask --depth 100 packages
+    git clone https://github.com/dask/dask --depth 100 packages/dask
 fi
 
-if [ ! -d "distributed" ]; then
+if [ ! -d "packages/distributed" ]; then
     echo "Cloning distributed@main"
-    git clone https://github.com/dask/distributed --depth 100 packages
+    git clone https://github.com/dask/distributed --depth 100 packages/distributed
 fi
 
 pushd packages/dask
+git fetch
 git checkout main
 popd
 
 pushd packages/distributed
+git fetch
 git checkout main
 popd
 
