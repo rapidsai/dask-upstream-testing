@@ -1,4 +1,0 @@
-# used to force installing dask / distributed main
-# even if another package like rapids-dask-dependency wants something else
-dask[test] @ git+https://github.com/dask/dask.git@main
-distributed @ git+https://github.com/dask/distributed.git@main
