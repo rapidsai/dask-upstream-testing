@@ -89,19 +89,6 @@ if $run_dask_cuda; then
 
 fi
 
-# --- dask ---
-
-if $run_dask; then
-
-    echo "[testing dask]"
-    pytest -v --timeout=120 -m gpu packages/dask/dask
-
-    if [[ $? -ne 0 ]]; then
-        exit_code=1
-    fi
-
-fi
-
 # --- raft-dask ---
 if $run_raft_dask; then
 
@@ -114,6 +101,21 @@ if $run_raft_dask; then
 
 fi
 
+# --- dask ---
+
+if $run_dask; then
+
+    echo "[testing dask]"
+    # https://github.com/rapidsai/dask-upstream-testing/issues/23
+    # cuML fails to import tests when Dask / distributed is installed in editable mode.
+    uv pip install --no-deps -e ./packages/dask
+    pytest -v --timeout=120 -m gpu packages/dask/dask
+
+    if [[ $? -ne 0 ]]; then
+        exit_code=1
+    fi
+
+fi
 
 
 # --- distributed ---
@@ -121,6 +123,9 @@ fi
 if $run_distributed; then
 
     echo "[testing distributed]"
+    # https://github.com/rapidsai/dask-upstream-testing/issues/23
+    # cuML fails to import tests when Dask / distributed is installed in editable mode.
+    uv pip install --no-deps -e ./packages/distributed
     pytest -v --timeout=120 -m gpu --runslow packages/distributed/distributed
 
     if [[ $? -ne 0 ]]; then

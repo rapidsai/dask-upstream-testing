@@ -9,7 +9,7 @@ if ! command -v uv > /dev/null; then
     source $HOME/.local/bin/env
 fi
 
-uv venv --allow-existing
+uv venv --allow-existing --python 3.12
 source .venv/bin/activate
 
 ./scripts/install.sh

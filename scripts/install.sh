@@ -100,8 +100,5 @@ git fetch
 git checkout main
 popd
 
-# Finally, ensure that
-uv pip install --no-deps -e ./packages/dask -e ./packages/distributed
-
 echo "[Setup done]"
 uv pip list
