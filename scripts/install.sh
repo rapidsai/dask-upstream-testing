@@ -62,6 +62,18 @@ git fetch
 git checkout $raft_commit
 popd
 
+ucxx_commit=$(./scripts/check-version.py ucxx)
+
+if [ ! -d "packages/ucxx" ]; then
+    echo "Cloning ucxx@{$CUDF_VERSION}"
+    git clone https://github.com/rapidsai/ucxx.git packages/ucxx
+fi
+
+pushd packages/ucxx
+git fetch
+git checkout $ucxx_commit
+popd
+
 if [ ! -d "packages/dask-cuda" ]; then
     echo "Cloning cudf@{$CUDF_VERSION}"
     git clone https://github.com/rapidsai/dask-cuda.git --branch $CUDF_VERSION packages/dask-cuda

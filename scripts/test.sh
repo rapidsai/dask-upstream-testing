@@ -8,6 +8,7 @@ if [ $# -eq 0 ]; then
     run_dask_cudf=true
     run_distributed=true
     run_raft_dask=true
+    run_ucxx=true
 else
     run_cuml=false
     run_dask=false
@@ -15,6 +16,7 @@ else
     run_dask_cudf=false
     run_distributed=false
     run_raft_dask=false
+    run_ucxx=false
 fi
 
 # Parse command-line arguments
@@ -38,8 +40,11 @@ while [[ $# -gt 0 ]]; do
         --raft-dask-only)
             run_raft_dask=true
             ;;
+        --ucxx-only)
+            run_ucxx=true
+            ;;
         --help)
-            echo "Usage: $0 [--dask-only] [--distributed-only] [--dask-cuda-only] [--dask-cudf-only]"
+            echo "Usage: $0 [--dask-only] [--distributed-only] [--dask-cuda-only] [--dask-cudf-only] [--ucx-only]"
             exit 0
             ;;
         *)
@@ -101,6 +106,7 @@ if $run_raft_dask; then
 
 fi
 
+
 # --- dask ---
 
 if $run_dask; then
@@ -134,5 +140,22 @@ if $run_distributed; then
     fi
 
 fi
+
+
+if $run_ucxx; then
+
+    echo "[testing ucxx]"
+    # this imports distributed.comms.tests, so has to come after we install distributed above.
+    # And we need to do an editable install here for distributed-ucxx's tests to be importable
+    uv pip install --no-deps -e "distributed-ucxx-cu12 @ ./packages/ucxx/python/distributed-ucxx"
+    # -k not ... skips are for https://github.com/rapidsai/dask-upstream-testing/issues/27
+    pytest -v --timeout=120 packages/ucxx/python/distributed-ucxx/distributed_ucxx "-k not (test_transpose)"
+
+    if [[ $? -ne 0 ]]; then
+        exit_code=1
+    fi
+
+fi
+
 
 exit $exit_code
