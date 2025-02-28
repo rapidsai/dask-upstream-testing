@@ -127,7 +127,7 @@ if $run_distributed; then
     # cuML fails to import tests when Dask / distributed is installed in editable mode.
     uv pip install --no-deps -e ./packages/distributed
     # -k not ... skips are for https://github.com/rapidsai/dask-upstream-testing/issues/27
-    pytest -v --timeout=120 -m gpu --runslow packages/distributed/distributed -k "not test_stress" -k "not test_transpose" -k "not test_rmm_metrics" -k "not test_malloc_trim_threshold"
+    pytest -v --timeout=120 -m gpu --runslow packages/distributed/distributed -k "not (test_stress or test_transpose or test_rmm_metrics or test_malloc_trim_threshold)"
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
