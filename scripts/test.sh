@@ -88,7 +88,7 @@ if $run_dask_cuda; then
     echo "[testing dask-cuda]"
 
     # -k not ... skips are for https://github.com/rapidsai/dask-upstream-testing/issues/27
-    pytest -v --timeout=120 packages/dask-cuda/dask_cuda/tests -k "not (test_compatibility_mode_dataframe_shuffle or test_worker_force_spill_to_disk or test_cupy_cluster_device_spill or test_cudf_spill_cluster)"
+    pytest -v --timeout=120 packages/dask-cuda/dask_cuda/tests -k "not (test_compatibility_mode_dataframe_shuffle or test_worker_force_spill_to_disk or test_cupy_cluster_device_spill or test_cudf_spill_cluster or test_cudf_cluster_device_spill)"
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
