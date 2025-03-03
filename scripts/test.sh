@@ -149,7 +149,10 @@ if $run_ucxx; then
     echo "[testing ucxx]"
     # this imports distributed.comms.tests, so has to come after we install distributed above.
     # And we need to do an editable install here for distributed-ucxx's tests to be importable
-    uv pip install --no-deps -e "distributed-ucxx-cu12 @ ./packages/ucxx/python/distributed-ucxx"
+
+    RAPIDS_PY_CUDA_SUFFIX=$(echo "cu${RAPIDS_CUDA_VERSION:-12.15.1}" | cut -d '.' -f 1)
+
+    uv pip install --no-deps -e "distributed-ucxx-${RAPIDS_PY_CUDA_SUFFIX} @ ./packages/ucxx/python/distributed-ucxx"
     # -k not ... skips are for https://github.com/rapidsai/dask-upstream-testing/issues/27
     pytest -v --timeout=120 packages/ucxx/python/distributed-ucxx/distributed_ucxx "-k not (test_transpose)"
 
