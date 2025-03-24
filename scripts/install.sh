@@ -25,13 +25,13 @@ uv pip install --extra-index-url=https://pypi.anaconda.org/rapidsai-wheels-night
 mkdir -p packages
 
 # Clone cudf repo for tests
-CUDF_VERSION="branch-25.04"
+RAPIDS_BRANCH="branch-25.06"
 
 cudf_commit=$(./scripts/check-version.py cudf)
 
 if [ ! -d "packages/cudf" ]; then
-    echo "Cloning cudf@{$CUDF_VERSION}"
-    git clone https://github.com/rapidsai/cudf.git --branch $CUDF_VERSION packages/cudf
+    echo "Cloning cudf@{$RAPIDS_BRANCH}"
+    git clone https://github.com/rapidsai/cudf.git --branch $RAPIDS_BRANCH packages/cudf
 fi
 
 pushd packages/cudf
@@ -41,8 +41,8 @@ popd
 cuml_commit=$(./scripts/check-version.py cuml)
 
 if [ ! -d "packages/cuml" ]; then
-    echo "Cloning cuml@{$CUDF_VERSION}"
-    git clone https://github.com/rapidsai/cuml.git --branch $CUDF_VERSION packages/cuml
+    echo "Cloning cuml@{$RAPIDS_BRANCH}"
+    git clone https://github.com/rapidsai/cuml.git --branch $RAPIDS_BRANCH packages/cuml
 fi
 
 pushd packages/cuml
@@ -53,8 +53,8 @@ popd
 raft_commit=$(./scripts/check-version.py raft_dask)
 
 if [ ! -d "packages/raft" ]; then
-    echo "Cloning raft@{$CUDF_VERSION}"
-    git clone https://github.com/rapidsai/raft.git --branch $CUDF_VERSION packages/raft
+    echo "Cloning raft@{$RAPIDS_BRANCH}"
+    git clone https://github.com/rapidsai/raft.git --branch $RAPIDS_BRANCH packages/raft
 fi
 
 pushd packages/raft
@@ -65,7 +65,7 @@ popd
 ucxx_commit=$(./scripts/check-version.py ucxx)
 
 if [ ! -d "packages/ucxx" ]; then
-    echo "Cloning ucxx@{$CUDF_VERSION}"
+    echo "Cloning ucxx@{$RAPIDS_BRANCH}"
     git clone https://github.com/rapidsai/ucxx.git packages/ucxx
 fi
 
@@ -75,8 +75,8 @@ git checkout $ucxx_commit
 popd
 
 if [ ! -d "packages/dask-cuda" ]; then
-    echo "Cloning cudf@{$CUDF_VERSION}"
-    git clone https://github.com/rapidsai/dask-cuda.git --branch $CUDF_VERSION packages/dask-cuda
+    echo "Cloning cudf@{$RAPIDS_BRANCH}"
+    git clone https://github.com/rapidsai/dask-cuda.git --branch $RAPIDS_BRANCH packages/dask-cuda
 fi
 
 # Clone dask-cuda for tests
@@ -87,7 +87,7 @@ fi
 
 pushd packages/dask-cuda
 git fetch
-git checkout $CUDF_VERSION
+git checkout $RAPIDS_BRANCH
 popd
 
 # depth needs to be sufficient to reach the last tag, so that the package
@@ -105,11 +105,13 @@ fi
 pushd packages/dask
 git fetch
 git checkout main
+git pull
 popd
 
 pushd packages/distributed
 git fetch
 git checkout main
+git pull
 popd
 
 echo "[Setup done]"
