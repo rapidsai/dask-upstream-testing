@@ -105,7 +105,7 @@ fi
 if $run_dask_image; then
 
     echo "[testing dask-image]"
-    pytest -v packages/dask-image/
+    pytest -v packages/dask-image/ -m cupy
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
