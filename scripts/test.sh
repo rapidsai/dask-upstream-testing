@@ -6,6 +6,7 @@ if [ $# -eq 0 ]; then
     run_dask=true
     run_dask_cuda=true
     run_dask_cudf=true
+    run_dask_image=true
     run_distributed=true
     run_raft_dask=true
     run_ucxx=true
@@ -14,6 +15,7 @@ else
     run_dask=false
     run_dask_cuda=false
     run_dask_cudf=false
+    run_dask_image=false
     run_distributed=false
     run_raft_dask=false
     run_ucxx=false
@@ -34,6 +36,9 @@ while [[ $# -gt 0 ]]; do
         --dask-cudf-only)
             run_dask_cudf=true
             ;;
+        --dask-image-only)
+            run_dask_image=true
+            ;;
         --distributed-only)
             run_distributed=true
             ;;
@@ -44,7 +49,7 @@ while [[ $# -gt 0 ]]; do
             run_ucxx=true
             ;;
         --help)
-            echo "Usage: $0 [--dask-only] [--distributed-only] [--dask-cuda-only] [--dask-cudf-only] [--ucx-only]"
+            echo "Usage: $0 [--dask-only] [--distributed-only] [--dask-cuda-only] [--dask-cudf-only] [--dask-image-only] [--ucx-only]"
             exit 0
             ;;
         *)
@@ -95,6 +100,19 @@ if $run_dask_cuda; then
     fi
 
 fi
+
+# --- dask-image ---
+if $run_dask_image; then
+
+    echo "[testing dask-image]"
+    pytest -v packages/dask-image/ -m cupy
+
+    if [[ $? -ne 0 ]]; then
+        exit_code=1
+    fi
+
+fi
+
 
 # --- raft-dask ---
 if $run_raft_dask; then
