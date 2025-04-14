@@ -9,6 +9,8 @@ RAPIDS_PY_CUDA_SUFFIX=$(echo "cu${RAPIDS_CUDA_VERSION:-12.15.1}" | cut -d '.' -f
 uv pip install --extra-index-url=https://pypi.anaconda.org/rapidsai-wheels-nightly/simple \
   --overrides=requirements/overrides.txt \
   --prerelease allow \
+  --upgrade \
+  "dask-image[test] @ git+https://github.com/dask/dask-image.git@main" \
   "cuml-${RAPIDS_PY_CUDA_SUFFIX}[test]" \
   "cudf-${RAPIDS_PY_CUDA_SUFFIX}" \
   "dask-cudf-${RAPIDS_PY_CUDA_SUFFIX}" \
@@ -88,6 +90,18 @@ fi
 pushd packages/dask-cuda
 git fetch
 git checkout $RAPIDS_BRANCH
+popd
+
+
+if [ ! -d "packages/dask-image" ]; then
+    echo "Cloning dask-image"
+    git clone https://github.com/dask/dask-image.git --depth 100 packages/dask-image
+fi
+
+pushd packages/dask-image
+git fetch
+git checkout main
+uv pip install -e . --no-deps
 popd
 
 # depth needs to be sufficient to reach the last tag, so that the package
