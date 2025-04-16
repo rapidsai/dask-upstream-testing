@@ -37,6 +37,7 @@ if [ ! -d "packages/cudf" ]; then
 fi
 
 pushd packages/cudf
+git fetch
 git checkout $cudf_commit
 popd
 
