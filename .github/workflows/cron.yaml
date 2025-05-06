@@ -8,7 +8,12 @@ on:
     # https://github.com/rapidsai/workflows/blob/main/.github/workflows/nightly-pipeline-trigger.yaml is
     # currently set to 5:00 UTC and takes ~12 hours
     - cron: "15 06,18 * * *"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      dask_branch:
+        type: string
+        description: Dask version, which will be checked out from the given branch. Default is main. Can be a tag like '2025.4.1'.
+        default: main
 
 jobs:
   setup:
@@ -23,12 +28,15 @@ jobs:
       - name: Get current branch
         id: branch
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> "$GITHUB_OUTPUT"
+      - name: Set Dask branch
+        id: dask-branch
+        run: echo "DASK_BRANCH=${{ inputs.dask_branch }}" >> "$GITHUB_OUTPUT"
 
   dask-tests:
     needs: setup
     # run the Dask and Distributed unit tests
     secrets: inherit
-    uses: rapidsai/shared-workflows/.github/workflows/wheels-test.yaml@branch-25.04
+    uses: rapidsai/shared-workflows/.github/workflows/wheels-test.yaml@branch-25.06
     with:
       # This selects "ARCH=amd64 + the latest supported Python + CUDA".
       matrix_filter: map(select(.ARCH == "amd64")) | group_by(.CUDA_VER|split(".")|map(tonumber)|.[0]) | map(max_by([(.PY_VER|split(".")|map(tonumber)), (.CUDA_VER|split(".")|map(tonumber))]))
