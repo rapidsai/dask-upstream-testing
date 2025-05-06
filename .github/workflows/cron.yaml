@@ -15,6 +15,9 @@ on:
         description: Dask version, which will be checked out from the given branch. Default is main. Can be a tag like '2025.4.1'.
         default: main
 
+env:
+  DASK_BRANCH: ${{ inputs.dask_branch }}
+
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -28,9 +31,6 @@ jobs:
       - name: Get current branch
         id: branch
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> "$GITHUB_OUTPUT"
-      - name: Set Dask branch
-        id: dask-branch
-        run: echo "DASK_BRANCH=${{ inputs.dask_branch }}" >> "$GITHUB_OUTPUT"
 
   dask-tests:
     needs: setup
