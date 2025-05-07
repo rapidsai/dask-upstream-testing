@@ -9,14 +9,9 @@ on:
     # currently set to 5:00 UTC and takes ~12 hours
     - cron: "15 06,18 * * *"
   workflow_dispatch:
-    inputs:
-      dask_branch:
-        type: string
-        description: Dask version, which will be checked out from the given branch. Default is main. Can be a tag like '2025.4.1'.
-        default: main
+    inputs: {}
 
 env:
-  DASK_BRANCH: ${{ inputs.dask_branch }}
   UV_LINK_MODE: "copy"  # avoid warnings in CI
 
 jobs:
