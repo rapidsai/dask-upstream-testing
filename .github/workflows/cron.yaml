@@ -17,6 +17,7 @@ on:
 
 env:
   DASK_BRANCH: ${{ inputs.dask_branch }}
+  UV_LINK_MODE: "copy"  # avoid warnings in CI
 
 jobs:
   setup:
