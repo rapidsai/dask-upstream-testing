@@ -2,6 +2,8 @@
 # SPDX-FileCopyrightText: Copyright (c) 2025, NVIDIA CORPORATION & AFFILIATES.
 set -euo pipefail
 
+DASK_BRANCH=${DASK_BRANCH:-main}
+
 # RAPIDS_CUDA_VERSION is like 12.15.1
 # We want cu12
 RAPIDS_PY_CUDA_SUFFIX=$(echo "cu${RAPIDS_CUDA_VERSION:-12.15.1}" | cut -d '.' -f 1)
@@ -108,24 +110,24 @@ popd
 # depth needs to be sufficient to reach the last tag, so that the package
 # versions are set correctly
 if [ ! -d "packages/dask" ]; then
-    echo "Cloning dask@main"
-    git clone https://github.com/dask/dask --depth 100 packages/dask
+    echo "Cloning dask@${DASK_BRANCH}"
+    git clone https://github.com/dask/dask --depth 100 packages/dask --branch "${DASK_BRANCH}"
 fi
 
 if [ ! -d "packages/distributed" ]; then
-    echo "Cloning distributed@main"
-    git clone https://github.com/dask/distributed --depth 100 packages/distributed
+    echo "Cloning distributed@${DASK_BRANCH}"
+    git clone https://github.com/dask/distributed --depth 100 packages/distributed --branch "${DASK_BRANCH}"
 fi
 
 pushd packages/dask
 git fetch
-git checkout main
+git checkout "${DASK_BRANCH}"
 git pull
 popd
 
 pushd packages/distributed
 git fetch
-git checkout main
+git checkout "${DASK_BRANCH}"
 git pull
 popd
 
