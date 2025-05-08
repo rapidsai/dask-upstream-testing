@@ -9,28 +9,30 @@ DASK_BRANCH=${DASK_BRANCH:-2025.4.1}
 # We want cu12
 RAPIDS_PY_CUDA_SUFFIX=$(echo "cu${RAPIDS_CUDA_VERSION:-12.15.1}" | cut -d '.' -f 1)
 
+# Controls which branch of rapids libraries give us the tests.
+export RAPIDS_BRANCH="branch-25.06"
+export RAPIDS_VERSION_RANGE=">=25.6.0a0,<25.8.0a0"
+
+
 uv pip install --extra-index-url=https://pypi.anaconda.org/rapidsai-wheels-nightly/simple \
   --overrides=requirements/overrides.txt \
   --prerelease allow \
   --upgrade \
   "dask-image[test] @ git+https://github.com/dask/dask-image.git@main" \
-  "cuml-${RAPIDS_PY_CUDA_SUFFIX}[test]" \
-  "cudf-${RAPIDS_PY_CUDA_SUFFIX}" \
-  "dask-cudf-${RAPIDS_PY_CUDA_SUFFIX}" \
-  "raft-dask-${RAPIDS_PY_CUDA_SUFFIX}" \
+  "cuml-${RAPIDS_PY_CUDA_SUFFIX}[test]${RAPIDS_VERSION_RANGE}" \
+  "cudf-${RAPIDS_PY_CUDA_SUFFIX}${RAPIDS_VERSION_RANGE}" \
+  "dask-cudf-${RAPIDS_PY_CUDA_SUFFIX}${RAPIDS_VERSION_RANGE}" \
+  "raft-dask-${RAPIDS_PY_CUDA_SUFFIX}${RAPIDS_VERSION_RANGE}" \
   "ucx-py-${RAPIDS_PY_CUDA_SUFFIX}" \
   "ucxx-${RAPIDS_PY_CUDA_SUFFIX}" \
   "scipy" \
-  "dask-cuda" \
+  "dask-cuda${RAPIDS_VERSION_RANGE}" \
   "pytest-timeout"
 
 # packages holds all the downstream and upstream dependencies.
 # we want to avoid directories with the same name as packages
 # in the working directory
 mkdir -p packages
-
-# Clone cudf repo for tests
-RAPIDS_BRANCH="branch-25.06"
 
 cudf_commit=$(./scripts/check-version.py cudf)
 
