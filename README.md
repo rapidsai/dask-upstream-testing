@@ -17,3 +17,10 @@ This repository uses [workflow dispatch](https://docs.github.com/en/actions/writ
 a specific version of Dask.
 
 Navigate to the [cron workflow](https://github.com/rapidsai/dask-upstream-testing/actions/workflows/cron.yaml), select "Run workflow", and input a Dask version to test. This must be a branch name (like `main`) or a tag that is available in both Dask and Distributed repositorys (like `2025.4.1`). The default is `main`.
+
+## Version Upgrades
+
+We'd like to have a complete test run against a specific releaesd version of Dask prior to bumping the pin in [rapids-dask-dependency](https://github.com/rapidsai/rapids-dask-dependency). To test that
+
+1. Update `DASK_BRACH` in `install.sh` to select the tag for a specific version
+2. Update `overrides.txt` to pin to a specific version, rather than `main`
