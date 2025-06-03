@@ -32,7 +32,7 @@ jobs:
     needs: setup
     # run the Dask and Distributed unit tests
     secrets: inherit
-    uses: rapidsai/shared-workflows/.github/workflows/wheels-test.yaml@branch-25.06
+    uses: rapidsai/shared-workflows/.github/workflows/wheels-test.yaml@branch-25.08
     with:
       # This selects "ARCH=amd64 + the latest supported Python + CUDA".
       # Pinned to 3.12 until all dependencies have wheels. Waiting for

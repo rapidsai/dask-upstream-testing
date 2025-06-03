@@ -9,8 +9,8 @@ DASK_BRANCH=${DASK_BRANCH:-main}
 RAPIDS_PY_CUDA_SUFFIX=$(echo "cu${RAPIDS_CUDA_VERSION:-12.15.1}" | cut -d '.' -f 1)
 
 # Controls which branch of rapids libraries give us the tests.
-export RAPIDS_BRANCH="branch-25.06"
-export RAPIDS_VERSION_RANGE=">=25.6.0a0,<25.8.0a0"
+export RAPIDS_BRANCH="branch-25.08"
+export RAPIDS_VERSION_RANGE=">=25.8.0a0,<25.10.0a0"
 
 
 uv pip install --extra-index-url=https://pypi.anaconda.org/rapidsai-wheels-nightly/simple \

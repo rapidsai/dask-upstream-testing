@@ -24,3 +24,12 @@ We'd like to have a complete test run against a specific releaesd version of Das
 
 1. Update `DASK_BRACH` in `install.sh` to select the tag for a specific version
 2. Update `overrides.txt` to pin to a specific version, rather than `main`
+
+## RAPIDS version update
+
+After code freeze for a specific RAPIDS version (e.g. 25.06) when it's anticipated that no Dask version update is imminent,
+update the targeted RAPIDS version by changing
+
+- `RAPIDS_BRANCH` in `install.sh`
+- `RAPID_VERSION_RANGE` in `install.sh`
+- The branch in the `jobs.dask-tests.uses` field of `cron.yaml`
