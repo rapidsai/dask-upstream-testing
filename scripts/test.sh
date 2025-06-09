@@ -2,6 +2,7 @@
 # SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION & AFFILIATES.
 
 if [ $# -eq 0 ]; then
+    run_cudf_polars=true
     run_cuml=true
     run_dask=true
     run_dask_cuda=true
@@ -11,6 +12,7 @@ if [ $# -eq 0 ]; then
     run_raft_dask=true
     run_ucxx=true
 else
+    run_cudf_polars=false
     run_cuml=false
     run_dask=false
     run_dask_cuda=false
@@ -24,6 +26,9 @@ fi
 # Parse command-line arguments
 while [[ $# -gt 0 ]]; do
     case "$1" in
+        --cudf-polars-only)
+            run_cudf_polars=true
+            ;;
         --cuml-only)
             run_cuml=true
             ;;
@@ -62,6 +67,17 @@ done
 
 exit_code=0;
 
+# --- cudf-polars ---
+if $run_cudf_polars; then
+    echo "[testing cudf-polars]"
+    pytest -v --timeout 120 packages/cudf/python/cudf_polars/tests/experimental/ --executor streaming --scheduler distributed
+
+    if [[ $? -ne 0 ]]; then
+        exit_code=1
+    fi
+fi
+
+
 # --- cuml ---
 if $run_cuml; then
 
@@ -73,7 +89,6 @@ if $run_cuml; then
     fi
 
 fi
-
 
 # --- dask-cudf ---
 if $run_dask_cudf; then
