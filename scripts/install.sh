@@ -20,12 +20,14 @@ uv pip install --extra-index-url=https://pypi.anaconda.org/rapidsai-wheels-night
   "dask-image[test] @ git+https://github.com/dask/dask-image.git@main" \
   "cuml-${RAPIDS_PY_CUDA_SUFFIX}[test]${RAPIDS_VERSION_RANGE}" \
   "cudf-${RAPIDS_PY_CUDA_SUFFIX}${RAPIDS_VERSION_RANGE}" \
+  "cudf-polars-${RAPIDS_PY_CUDA_SUFFIX}${RAPIDS_VERSION_RANGE}" \
   "dask-cudf-${RAPIDS_PY_CUDA_SUFFIX}${RAPIDS_VERSION_RANGE}" \
   "raft-dask-${RAPIDS_PY_CUDA_SUFFIX}${RAPIDS_VERSION_RANGE}" \
   "ucx-py-${RAPIDS_PY_CUDA_SUFFIX}" \
   "ucxx-${RAPIDS_PY_CUDA_SUFFIX}" \
   "scipy" \
   "dask-cuda${RAPIDS_VERSION_RANGE}" \
+  "rapidsmpf-${RAPIDS_PY_CUDA_SUFFIX}${RAPIDS_VERSION_RANGE}" \
   "pytest-timeout"
 
 # packages holds all the downstream and upstream dependencies.
