@@ -107,8 +107,7 @@ fi
 if $run_dask_cuda; then
     echo "[testing dask-cuda]"
 
-    # -k not ... skips are for https://github.com/rapidsai/dask-upstream-testing/issues/27
-    pytest -v --timeout=120 packages/dask-cuda/dask_cuda/tests -k "not (test_compatibility_mode_dataframe_shuffle or test_worker_force_spill_to_disk or test_cupy_cluster_device_spill or test_cudf_spill_cluster or test_cudf_cluster_device_spill)"
+    pytest -v --timeout=120 packages/dask-cuda/dask_cuda/tests
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
@@ -167,8 +166,7 @@ if $run_distributed; then
     # https://github.com/rapidsai/dask-upstream-testing/issues/23
     # cuML fails to import tests when Dask / distributed is installed in editable mode.
     uv pip install --no-deps -e ./packages/distributed
-    # -k not ... skips are for https://github.com/rapidsai/dask-upstream-testing/issues/27
-    pytest -v --timeout=120 -m gpu --runslow packages/distributed/distributed -k "not (test_stress or test_transpose or test_rmm_metrics or test_malloc_trim_threshold)"
+    pytest -v --timeout=120 -m gpu --runslow packages/distributed/distributed
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
@@ -186,8 +184,7 @@ if $run_ucxx; then
     RAPIDS_PY_CUDA_SUFFIX=$(echo "cu${RAPIDS_CUDA_VERSION:-12.15.1}" | cut -d '.' -f 1)
 
     uv pip install --no-deps -e "distributed-ucxx-${RAPIDS_PY_CUDA_SUFFIX} @ ./packages/ucxx/python/distributed-ucxx"
-    # -k not ... skips are for https://github.com/rapidsai/dask-upstream-testing/issues/27
-    pytest -v --timeout=120 packages/ucxx/python/distributed-ucxx/distributed_ucxx "-k not (test_transpose)"
+    pytest -v --timeout=120 packages/ucxx/python/distributed-ucxx/distributed_ucxx
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
