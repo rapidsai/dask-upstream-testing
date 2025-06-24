@@ -13,6 +13,8 @@ export RAPIDS_BRANCH="branch-25.08"
 export RAPIDS_VERSION_RANGE=">=25.8.0a0,<25.10.0a0"
 
 
+# scipy pinned to <1.16.0 to avoid deprecation warnings -> errors.
+# https://github.com/rapidsai/dask-upstream-testing/issues/63
 uv pip install --extra-index-url=https://pypi.anaconda.org/rapidsai-wheels-nightly/simple \
   --overrides=requirements/overrides.txt \
   --prerelease allow \
@@ -25,7 +27,7 @@ uv pip install --extra-index-url=https://pypi.anaconda.org/rapidsai-wheels-night
   "raft-dask-${RAPIDS_PY_CUDA_SUFFIX}${RAPIDS_VERSION_RANGE}" \
   "ucx-py-${RAPIDS_PY_CUDA_SUFFIX}" \
   "ucxx-${RAPIDS_PY_CUDA_SUFFIX}" \
-  "scipy" \
+  "scipy<1.16.0" \
   "dask-cuda${RAPIDS_VERSION_RANGE}" \
   "rapidsmpf-${RAPIDS_PY_CUDA_SUFFIX}${RAPIDS_VERSION_RANGE}" \
   "pytest-timeout"
