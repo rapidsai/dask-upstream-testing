@@ -11,9 +11,6 @@ on:
   workflow_dispatch:
     inputs: {}
 
-env:
-  UV_LINK_MODE: "copy"  # avoid warnings in CI
-
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -27,10 +24,12 @@ jobs:
       - name: Get current branch
         id: branch
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> "$GITHUB_OUTPUT"
+      - name: Set UV_LINK_MODE
+        id: link_mode
+        run: echo "LINK_MODE=copy" >> "$GITHUB_ENV"
 
   dask-tests:
     needs: setup
-    # run the Dask and Distributed unit tests
     secrets: inherit
     uses: rapidsai/shared-workflows/.github/workflows/wheels-test.yaml@branch-25.08
     with:
