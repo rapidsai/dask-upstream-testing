@@ -3,6 +3,7 @@
 
 if [ $# -eq 0 ]; then
     run_cudf_polars=true
+    run_cugraph=true
     run_cuml=true
     run_dask=true
     run_dask_cuda=true
@@ -13,6 +14,7 @@ if [ $# -eq 0 ]; then
     run_ucxx=true
 else
     run_cudf_polars=false
+    run_cugraph=false
     run_cuml=false
     run_dask=false
     run_dask_cuda=false
@@ -28,6 +30,9 @@ while [[ $# -gt 0 ]]; do
     case "$1" in
         --cudf-polars-only)
             run_cudf_polars=true
+            ;;
+        --cugraph-only)
+            run_cugraph=true
             ;;
         --cuml-only)
             run_cuml=true
@@ -75,6 +80,19 @@ if $run_cudf_polars; then
     if [[ $? -ne 0 ]]; then
         exit_code=1
     fi
+fi
+
+
+# --- cugraph ---
+if $run_cugraph; then
+
+    echo "[testing cugraph]"
+    pytest -v --timeout=120 packages/cugraph/python/cugraph/cugraph/ -k "_mg_"
+
+    if [[ $? -ne 0 ]]; then
+        exit_code=1
+    fi
+
 fi
 
 
