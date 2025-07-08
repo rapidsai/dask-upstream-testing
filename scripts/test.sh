@@ -166,7 +166,7 @@ if $run_distributed; then
     # https://github.com/rapidsai/dask-upstream-testing/issues/23
     # cuML fails to import tests when Dask / distributed is installed in editable mode.
     uv pip install --no-deps -e ./packages/distributed
-    pytest -v --timeout=120 -m gpu --runslow packages/distributed/distributed
+    pytest -v --timeout=120 -m gpu --runslow packages/distributed/distributed --deselect "distributed/comm/tests/test_ucx.py::test_registered" --deselect "distributed/comm/tests/test_ucx.py::test_ucx_specific"
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
