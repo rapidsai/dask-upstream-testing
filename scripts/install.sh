@@ -20,6 +20,7 @@ uv pip install --extra-index-url=https://pypi.anaconda.org/rapidsai-wheels-night
   --prerelease allow \
   --upgrade \
   "dask-image[test] @ git+https://github.com/dask/dask-image.git@main" \
+  "cugraph-${RAPIDS_PY_CUDA_SUFFIX}[test]${RAPIDS_VERSION_RANGE}" \
   "cuml-${RAPIDS_PY_CUDA_SUFFIX}[test]${RAPIDS_VERSION_RANGE}" \
   "cudf-${RAPIDS_PY_CUDA_SUFFIX}${RAPIDS_VERSION_RANGE}" \
   "cudf-polars-${RAPIDS_PY_CUDA_SUFFIX}${RAPIDS_VERSION_RANGE}" \
@@ -47,6 +48,19 @@ fi
 pushd packages/cudf
 git fetch
 git checkout $cudf_commit
+popd
+
+
+cugraph_commit=$(./scripts/check-version.py cugraph)
+
+if [ ! -d "packages/cugraph" ]; then
+    echo "Cloning cugraph@{$RAPIDS_BRANCH}"
+    git clone https://github.com/rapidsai/cugraph.git --branch $RAPIDS_BRANCH packages/cugraph
+fi
+
+pushd packages/cugraph
+git fetch
+git checkout $cugraph_commit
 popd
 
 cuml_commit=$(./scripts/check-version.py cuml)
