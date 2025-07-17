@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: Copyright (c) 2025, NVIDIA CORPORATION & AFFILIATES.
 set -euo pipefail
 
-DASK_BRANCH=${DASK_BRANCH:-"2025.7.0"}
+DASK_BRANCH=${DASK_BRANCH:-main}
 
 # RAPIDS_CUDA_VERSION is like 12.15.1
 # We want cu12
