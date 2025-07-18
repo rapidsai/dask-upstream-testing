@@ -1,2 +1,2 @@
-dask[test]==2025.7.0
-distributed==2025.7.0
+dask[test] @ git+https://github.com/dask/dask.git@main
+distributed @ git+https://github.com/dask/distributed.git@main
