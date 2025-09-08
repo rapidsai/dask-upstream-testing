@@ -87,7 +87,7 @@ fi
 if $run_cugraph; then
 
     echo "[testing cugraph]"
-    RAPIDS_DATASET_ROOT_DIR=packages/cugraph/datasets/ pytest -v --timeout=120 packages/cugraph/python/cugraph/cugraph/ -k "_mg_"
+    RAPIDS_DATASET_ROOT_DIR=packages/cugraph/datasets/ pytest -v --timeout=120 packages/cugraph/python/cugraph/cugraph/ -k "_mg_" --import-mode=append
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
