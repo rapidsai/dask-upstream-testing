@@ -151,7 +151,7 @@ fi
 if $run_raft_dask; then
 
     echo "[testing raft-dask]"
-    pytest -v --timeout=120 packages/raft/python/raft-dask/raft_dask/tests
+    pytest -v --import-mode=append --timeout=120 packages/raft/python/raft-dask/raft_dask/tests
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
