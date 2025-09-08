@@ -100,8 +100,8 @@ fi
 if $run_cuml; then
 
     echo "[testing cuml]"
-    pytest -v --timeout=120 --quick_run packages/cuml/python/cuml/cuml/tests/dask
-    pytest -v --timeout=120 --run_ucxx --quick_run packages/cuml/python/cuml/cuml/tests/dask
+    pytest -v --timeout=120 --quick_run packages/cuml/python/cuml/tests/dask
+    pytest -v --timeout=120 --quick_run packages/cuml/python/cuml/tests/dask --run_ucx
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
