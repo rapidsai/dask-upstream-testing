@@ -21,7 +21,7 @@ uv pip install --extra-index-url=https://pypi.anaconda.org/rapidsai-wheels-night
   --upgrade \
   "dask-image[test] @ git+https://github.com/dask/dask-image.git@main" \
   "cugraph-${RAPIDS_PY_CUDA_SUFFIX}[test]${RAPIDS_VERSION_RANGE}" \
-  "cuml-${RAPIDS_PY_CUDA_SUFFIX}[test]${RAPIDS_VERSION_RANGE}[test-dask]" \
+  "cuml-${RAPIDS_PY_CUDA_SUFFIX}[test,test-dask]${RAPIDS_VERSION_RANGE}" \
   "cudf-${RAPIDS_PY_CUDA_SUFFIX}${RAPIDS_VERSION_RANGE}" \
   "cudf-polars-${RAPIDS_PY_CUDA_SUFFIX}${RAPIDS_VERSION_RANGE}" \
   "dask-cudf-${RAPIDS_PY_CUDA_SUFFIX}${RAPIDS_VERSION_RANGE}" \
