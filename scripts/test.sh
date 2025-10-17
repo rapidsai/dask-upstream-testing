@@ -75,7 +75,7 @@ exit_code=0;
 # --- cudf-polars ---
 if $run_cudf_polars; then
     echo "[testing cudf-polars]"
-    pytest -v --timeout 120 packages/cudf/python/cudf_polars/tests/experimental/ --executor streaming --scheduler distributed
+    pytest -v --timeout 120 packages/cudf/python/cudf_polars/tests/experimental/ --executor streaming --cluster distributed
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
