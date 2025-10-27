@@ -31,7 +31,7 @@ jobs:
   dask-tests:
     needs: setup
     secrets: inherit
-    uses: rapidsai/shared-workflows/.github/workflows/wheels-test.yaml@branch-25.12
+    uses: rapidsai/shared-workflows/.github/workflows/wheels-test.yaml@main
     with:
       # This selects "ARCH=amd64 + the latest supported Python + CUDA".
       # Pinned to 3.12 until all dependencies have wheels. Waiting for
