@@ -9,7 +9,7 @@ DASK_BRANCH=${DASK_BRANCH:-main}
 RAPIDS_PY_CUDA_SUFFIX=$(echo "cu${RAPIDS_CUDA_VERSION:-12.15.1}" | cut -d '.' -f 1)
 
 # Controls which branch of rapids libraries give us the tests.
-export RAPIDS_BRANCH="branch-25.12"
+export RAPIDS_BRANCH="main"
 export RAPIDS_VERSION_RANGE=">=25.12.0a0,<26.0.0a0"
 
 
