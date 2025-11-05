@@ -11,6 +11,7 @@ RAPIDS_PY_CUDA_SUFFIX=$(echo "cu${RAPIDS_CUDA_VERSION:-12.15.1}" | cut -d '.' -f
 # Controls which branch of rapids libraries give us the tests.
 export RAPIDS_BRANCH="main"
 export RAPIDS_VERSION_RANGE=">=25.12.0a0,<26.0.0a0"
+export UCXX_VERSION_RANGE=">=0.47.0a0,<0.48.0a0"
 
 
 # scipy pinned to <1.16.0 to avoid deprecation warnings -> errors.
@@ -26,7 +27,7 @@ uv pip install --extra-index-url=https://pypi.anaconda.org/rapidsai-wheels-night
   "cudf-polars-${RAPIDS_PY_CUDA_SUFFIX}${RAPIDS_VERSION_RANGE}" \
   "dask-cudf-${RAPIDS_PY_CUDA_SUFFIX}${RAPIDS_VERSION_RANGE}" \
   "raft-dask-${RAPIDS_PY_CUDA_SUFFIX}${RAPIDS_VERSION_RANGE}" \
-  "ucxx-${RAPIDS_PY_CUDA_SUFFIX}" \
+  "ucxx-${RAPIDS_PY_CUDA_SUFFIX}${UCXX_VERSION_RANGE}" \
   "scipy<1.16.0" \
   "dask-cuda${RAPIDS_VERSION_RANGE}" \
   "rapidsmpf-${RAPIDS_PY_CUDA_SUFFIX}${RAPIDS_VERSION_RANGE}" \
