@@ -18,7 +18,7 @@ export UCXX_VERSION_RANGE=">=0.47.0a0,<0.48.0a0"
 # https://github.com/rapidsai/dask-upstream-testing/issues/63
 uv pip install --extra-index-url=https://pypi.anaconda.org/rapidsai-wheels-nightly/simple \
   --overrides=requirements/overrides.txt \
-  --prerelease if-necessary-or-explicit \
+  --prerelease allow \
   --upgrade \
   "dask-image[test] @ git+https://github.com/dask/dask-image.git@main" \
   "cugraph-${RAPIDS_PY_CUDA_SUFFIX}[test]${RAPIDS_VERSION_RANGE}" \
