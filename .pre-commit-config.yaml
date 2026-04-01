@@ -32,7 +32,7 @@ repos:
         args: ["--fix"]
       - id: ruff-format
   - repo: https://github.com/rapidsai/pre-commit-hooks
-    rev: v0.6.0
+    rev: v1.4.3
     hooks:
       - id: verify-copyright
         exclude: |
