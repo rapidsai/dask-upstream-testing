@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SPDX-FileCopyrightText: Copyright (c) 2025, NVIDIA CORPORATION & AFFILIATES.
+# SPDX-FileCopyrightText: Copyright (c) 2025-2026, NVIDIA CORPORATION & AFFILIATES.
 set -euo pipefail
 
 DASK_BRANCH=${DASK_BRANCH:-main}
@@ -10,8 +10,8 @@ RAPIDS_PY_CUDA_SUFFIX=$(echo "cu${RAPIDS_CUDA_VERSION:-12.15.1}" | cut -d '.' -f
 
 # Controls which branch of rapids libraries give us the tests.
 export RAPIDS_BRANCH="main"
-export RAPIDS_VERSION_RANGE=">=26.2.0a0,<26.4.0a0"
-export UCXX_VERSION_RANGE=">=0.48.0a0,<0.49.0a0"
+export RAPIDS_VERSION_RANGE=">=26.4.0a0,<26.6.0a0"
+export UCXX_VERSION_RANGE=">=0.49.0a0,<0.50.0a0"
 
 
 # scipy pinned to <1.16.0 to avoid deprecation warnings -> errors.

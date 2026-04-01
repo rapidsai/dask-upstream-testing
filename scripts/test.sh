@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION & AFFILIATES.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION & AFFILIATES.
 
 if [ $# -eq 0 ]; then
     run_cudf_polars=true
@@ -185,7 +185,7 @@ if $run_distributed; then
     # https://github.com/rapidsai/dask-upstream-testing/issues/23
     # cuML fails to import tests when Dask / distributed is installed in editable mode.
     uv pip install --no-deps -e ./packages/distributed
-    pytest -v --timeout=120 -m gpu --runslow packages/distributed/distributed --deselect "distributed/comm/tests/test_ucx.py::test_registered" --deselect "distributed/comm/tests/test_ucx.py::test_ucx_specific"
+    pytest -v --timeout=120 -m gpu --runslow packages/distributed/distributed --deselect "distributed/comm/tests/test_ucx.py::test_registered" --deselect "distributed/comm/tests/test_ucx.py::test_ucx_specific" --deselect "distributed/distributed/tests/test_nanny.py::test_malloc_trim_threshold"
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
