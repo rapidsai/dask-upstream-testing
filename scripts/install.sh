@@ -24,7 +24,7 @@ uv pip install --extra-index-url=https://pypi.anaconda.org/rapidsai-wheels-night
   "cugraph-${RAPIDS_PY_CUDA_SUFFIX}[test]${RAPIDS_VERSION_RANGE}" \
   "cuml-${RAPIDS_PY_CUDA_SUFFIX}[test,test-dask]${RAPIDS_VERSION_RANGE}" \
   "cudf-${RAPIDS_PY_CUDA_SUFFIX}${RAPIDS_VERSION_RANGE}" \
-  "cudf-polars-${RAPIDS_PY_CUDA_SUFFIX}${RAPIDS_VERSION_RANGE}" \
+  "cudf-polars-${RAPIDS_PY_CUDA_SUFFIX}[test]${RAPIDS_VERSION_RANGE}" \
   "dask-cudf-${RAPIDS_PY_CUDA_SUFFIX}${RAPIDS_VERSION_RANGE}" \
   "raft-dask-${RAPIDS_PY_CUDA_SUFFIX}${RAPIDS_VERSION_RANGE}" \
   "ucxx-${RAPIDS_PY_CUDA_SUFFIX}${UCXX_VERSION_RANGE}" \
