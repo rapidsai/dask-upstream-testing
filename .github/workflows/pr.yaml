@@ -1,5 +1,4 @@
 name: pr
-
 on:
   push:
     branches:
@@ -8,11 +7,10 @@ on:
     branches:
       - "main"
   workflow_dispatch: # allows you to trigger manually
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
+permissions: {}
 jobs:
   check-style:
     runs-on: ubuntu-latest
