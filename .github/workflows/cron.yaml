@@ -28,7 +28,7 @@ jobs:
         run: echo "LINK_MODE=copy" >> "$GITHUB_ENV"
   dask-tests:
     needs: setup
-    secrets: inherit
+    secrets: inherit # zizmor: ignore[secrets-inherit]
     uses: rapidsai/shared-workflows/.github/workflows/wheels-test.yaml@main
     with:
       # This selects "ARCH=amd64 + the latest supported Python + CUDA".
