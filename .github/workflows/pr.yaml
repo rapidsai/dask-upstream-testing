@@ -1,5 +1,4 @@
 name: pr
-
 on:
   push:
     branches:
@@ -8,18 +7,18 @@ on:
     branches:
       - "main"
   workflow_dispatch: # allows you to trigger manually
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
+permissions: {}
 jobs:
   check-style:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    - uses: actions/setup-python@v3
-    - uses: pre-commit/action@v3.0.1
+      - name: Checkout code
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@3542bca2639a428e1796aaa6a2ffef0c0f575566 # v3.1.4
+      - uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1

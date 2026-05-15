@@ -1,6 +1,5 @@
 # Based off https://github.com/rapidsai/cudf/blob/branch-25.04/.github/workflows/pandas-tests.yaml
 name: Test dask-upstream
-
 on:
   schedule:
     # 06:15 and 08:15 UTC daily.
@@ -10,7 +9,7 @@ on:
     - cron: "15 06,18 * * *"
   workflow_dispatch:
     inputs: {}
-
+permissions: {}
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -27,10 +26,9 @@ jobs:
       - name: Set UV_LINK_MODE
         id: link_mode
         run: echo "LINK_MODE=copy" >> "$GITHUB_ENV"
-
   dask-tests:
     needs: setup
-    secrets: inherit
+    secrets: inherit # zizmor: ignore[secrets-inherit]
     uses: rapidsai/shared-workflows/.github/workflows/wheels-test.yaml@main
     with:
       # This selects "ARCH=amd64 + the latest supported Python + CUDA".
@@ -43,3 +41,9 @@ jobs:
       date: ${{ needs.setup.outputs.date }}
       sha: ${{ github.sha }}
       script: scripts/run.sh
+    permissions:
+      actions: read
+      contents: read
+      id-token: write
+      packages: read
+      pull-requests: read
