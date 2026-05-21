@@ -75,7 +75,7 @@ exit_code=0;
 # --- cudf-polars ---
 if $run_cudf_polars; then
     echo "[testing cudf-polars]"
-    pytest -v --timeout 120 packages/cudf/python/cudf_polars/tests/ -k dask
+    pytest -ra --timeout 120 packages/cudf/python/cudf_polars/tests/ -k dask
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
@@ -87,7 +87,7 @@ fi
 if $run_cugraph; then
 
     echo "[testing cugraph]"
-    RAPIDS_DATASET_ROOT_DIR=packages/cugraph/datasets/ pytest -v --timeout=120 packages/cugraph/python/cugraph/cugraph/ -k "_mg_" --import-mode=append
+    RAPIDS_DATASET_ROOT_DIR=packages/cugraph/datasets/ pytest -ra --timeout=120 packages/cugraph/python/cugraph/cugraph/ -k "_mg_" --import-mode=append
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
@@ -100,8 +100,8 @@ fi
 if $run_cuml; then
 
     echo "[testing cuml]"
-    pytest -v --timeout=120 --quick_run packages/cuml/python/cuml/tests/dask
-    pytest -v --timeout=120 --quick_run packages/cuml/python/cuml/tests/dask --run_ucx
+    pytest -ra --timeout=120 --quick_run packages/cuml/python/cuml/tests/dask
+    pytest -ra --timeout=120 --quick_run packages/cuml/python/cuml/tests/dask --run_ucx
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
@@ -113,7 +113,7 @@ fi
 if $run_dask_cudf; then
 
     echo "[testing dask-cudf]"
-    pytest -v --timeout=120 packages/cudf/python/dask_cudf
+    pytest -ra --timeout=120 packages/cudf/python/dask_cudf
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
@@ -126,7 +126,7 @@ fi
 if $run_dask_cuda; then
     echo "[testing dask-cuda]"
 
-    pytest -v --timeout=120 packages/dask-cuda/dask_cuda/tests
+    pytest -ra --timeout=120 packages/dask-cuda/dask_cuda/tests
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
@@ -138,7 +138,7 @@ fi
 if $run_dask_image; then
 
     echo "[testing dask-image]"
-    pytest -v packages/dask-image/ -m cupy
+    pytest -ra packages/dask-image/ -m cupy
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
@@ -151,7 +151,7 @@ fi
 if $run_raft_dask; then
 
     echo "[testing raft-dask]"
-    pytest -v --import-mode=append --timeout=120 packages/raft/python/raft-dask/raft_dask/tests
+    pytest -ra --import-mode=append --timeout=120 packages/raft/python/raft-dask/raft_dask/tests
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
@@ -168,7 +168,7 @@ if $run_dask; then
     # https://github.com/rapidsai/dask-upstream-testing/issues/23
     # cuML fails to import tests when Dask / distributed is installed in editable mode.
     uv pip install --no-deps -e ./packages/dask
-    pytest -v --timeout=120 -m gpu packages/dask/dask
+    pytest -ra --timeout=120 -m gpu packages/dask/dask
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
@@ -185,7 +185,7 @@ if $run_distributed; then
     # https://github.com/rapidsai/dask-upstream-testing/issues/23
     # cuML fails to import tests when Dask / distributed is installed in editable mode.
     uv pip install --no-deps -e ./packages/distributed
-    pytest -v --timeout=120 -m gpu --runslow packages/distributed/distributed \
+    pytest -ra --timeout=120 -m gpu --runslow packages/distributed/distributed \
          --deselect "distributed/comm/tests/test_ucx.py::test_registered" \
          --deselect "distributed/comm/tests/test_ucx.py::test_ucx_specific" \
          --deselect "distributed/tests/test_nanny.py::test_malloc_trim_threshold" \
@@ -207,7 +207,7 @@ if $run_ucxx; then
     RAPIDS_PY_CUDA_SUFFIX=$(echo "cu${RAPIDS_CUDA_VERSION:-12.15.1}" | cut -d '.' -f 1)
 
     uv pip install --no-deps -e "distributed-ucxx-${RAPIDS_PY_CUDA_SUFFIX} @ ./packages/ucxx/python/distributed-ucxx"
-    pytest -v --timeout=120 packages/ucxx/python/distributed-ucxx/distributed_ucxx
+    pytest -ra --timeout=120 packages/ucxx/python/distributed-ucxx/distributed_ucxx
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
