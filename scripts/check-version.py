@@ -1,13 +1,13 @@
 #!/usr/bin/env python
-# SPDX-FileCopyrightText: Copyright (c) 2023-2025, NVIDIA CORPORATION & AFFILIATES.
+# SPDX-FileCopyrightText: Copyright (c) 2023-2026, NVIDIA CORPORATION & AFFILIATES.
 """
 Print the git commit a rapids package was built from.
 """
 
 import argparse
 import importlib
-import sys
 import importlib.resources
+import sys
 
 
 def parse_args(args=None):
