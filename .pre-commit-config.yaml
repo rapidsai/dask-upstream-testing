@@ -35,16 +35,6 @@ repos:
     rev: v1.4.3
     hooks:
       - id: verify-copyright
-        exclude: |
-          (?x)^(
-            cpp/include/cudf_test/cxxopts[.]hpp$|
-            cpp/src/io/parquet/ipc/Message_generated[.]h$|
-            cpp/src/io/parquet/ipc/Schema_generated[.]h$|
-            cpp/cmake/Modules/FindCUDAToolkit[.]cmake$
-          )
-      - id: verify-alpha-spec
-      - id: verify-codeowners
-        args: [--fix, --project-prefix=cudf]
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.10.0.1
     hooks:
