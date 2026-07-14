@@ -87,7 +87,8 @@ fi
 if $run_cugraph; then
 
     echo "[testing cugraph]"
-    RAPIDS_DATASET_ROOT_DIR=packages/cugraph/datasets/ pytest -ra --timeout=120 packages/cugraph/python/cugraph/cugraph/ -k "_mg_" --import-mode=append
+    # Set DASK_DISTRIBUTED__CLIENT__SCHEDULER_INFO_INTERVAL to (maybe) avoid a race condition in distributed. Still investigating.
+    DASK_DISTRIBUTED__CLIENT__SCHEDULER_INFO_INTERVAL=100s RAPIDS_DATASET_ROOT_DIR=packages/cugraph/datasets/ pytest -ra --timeout=120 packages/cugraph/python/cugraph/cugraph/ -k "_mg_" --import-mode=append
 
     if [[ $? -ne 0 ]]; then
         exit_code=1
