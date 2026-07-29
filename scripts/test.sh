@@ -204,10 +204,11 @@ if $run_ucxx; then
     echo "[testing ucxx]"
     # this imports distributed.comms.tests, so has to come after we install distributed above.
     # And we need to do an editable install here for distributed-ucxx's tests to be importable
-
+    # We might not have nvcc, but we don't need it, so we uninstall distributed-ucxx-cuxx
+    # 
     RAPIDS_PY_CUDA_SUFFIX=$(echo "cu${RAPIDS_CUDA_VERSION:-12.15.1}" | cut -d '.' -f 1)
-
-    uv pip install --no-deps -e "distributed-ucxx-${RAPIDS_PY_CUDA_SUFFIX} @ ./packages/ucxx/python/distributed-ucxx"
+    uv pip uninstall "distributed-ucxx-${RAPIDS_PY_CUDA_SUFFIX}"
+    RAPIDS_DISABLE_CUDA=true uv pip install --no-deps -e "distributed-ucxx @ ./packages/ucxx/python/distributed-ucxx"
     pytest -ra --timeout=120 packages/ucxx/python/distributed-ucxx/distributed_ucxx
 
     if [[ $? -ne 0 ]]; then
