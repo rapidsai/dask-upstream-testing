@@ -101,19 +101,17 @@ git checkout $ucxx_commit
 popd
 
 if [ ! -d "packages/dask-cuda" ]; then
-    echo "Cloning cudf@{$RAPIDS_BRANCH}"
+    echo "Cloning dask-cuda@{$RAPIDS_BRANCH}"
     git clone https://github.com/rapidsai/dask-cuda.git --branch $RAPIDS_BRANCH packages/dask-cuda
 fi
 
-# Clone dask-cuda for tests
-# dask-cuda nightly wheels currently lack a __git_commit__.
-# Looking into it, but for now just use the branch.
-
-# dask_cuda_commit=$(./scripts/check-version.py dask_cuda)
+# Clone dask-cuda for tests, checking out the commit the installed wheel was
+# built from so the tests match the installed package.
+dask_cuda_commit=$(./scripts/check-version.py dask_cuda)
 
 pushd packages/dask-cuda
 git fetch
-git checkout $RAPIDS_BRANCH
+git checkout $dask_cuda_commit
 popd
 
 
