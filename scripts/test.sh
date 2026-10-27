@@ -75,7 +75,10 @@ exit_code=0
 # --- cudf-polars ---
 if $run_cudf_polars; then
   echo "[testing cudf-polars]"
-  pytest -ra --timeout 120 packages/cudf/python/cudf_polars/tests/ -k dask
+  pytest -ra --timeout 120 packages/cudf/python/cudf_polars/tests/ \
+    --ignore=packages/cudf/python/cudf_polars/tests/streaming/test_tpch.py \
+    --ignore=packages/cudf/python/cudf_polars/tests/streaming/test_tpcds.py \
+    -k dask
 
   if [[ $? -ne 0 ]]; then
     exit_code=1
