@@ -10,9 +10,8 @@ RAPIDS_PY_CUDA_SUFFIX=$(echo "cu${RAPIDS_CUDA_VERSION:-12.15.1}" | cut -d '.' -f
 
 # Controls which branch of rapids libraries give us the tests.
 export RAPIDS_BRANCH="main"
-export RAPIDS_VERSION_RANGE=">=26.12.0a0,<27.02.0a0"
-export UCXX_VERSION_RANGE=">=0.53.0a0,<0.54.0a0"
-
+export RAPIDS_VERSION_RANGE=">=27.02.0a0,<27.04.0a0"
+export UCXX_VERSION_RANGE=">=0.54.0a0,<0.55.0a0"
 
 # scipy pinned to <1.16.0 to avoid deprecation warnings -> errors.
 # https://github.com/rapidsai/dask-upstream-testing/issues/63
@@ -42,8 +41,8 @@ mkdir -p packages
 cudf_commit=$(./scripts/check-version.py cudf)
 
 if [ ! -d "packages/cudf" ]; then
-    echo "Cloning cudf@{$RAPIDS_BRANCH}"
-    git clone https://github.com/rapidsai/cudf.git --branch $RAPIDS_BRANCH packages/cudf
+  echo "Cloning cudf@{$RAPIDS_BRANCH}"
+  git clone https://github.com/rapidsai/cudf.git --branch $RAPIDS_BRANCH packages/cudf
 fi
 
 pushd packages/cudf
@@ -51,12 +50,11 @@ git fetch
 git checkout $cudf_commit
 popd
 
-
 cugraph_commit=$(./scripts/check-version.py cugraph)
 
 if [ ! -d "packages/cugraph" ]; then
-    echo "Cloning cugraph@{$RAPIDS_BRANCH}"
-    git clone https://github.com/rapidsai/cugraph.git --branch $RAPIDS_BRANCH packages/cugraph
+  echo "Cloning cugraph@{$RAPIDS_BRANCH}"
+  git clone https://github.com/rapidsai/cugraph.git --branch $RAPIDS_BRANCH packages/cugraph
 fi
 
 pushd packages/cugraph
@@ -67,8 +65,8 @@ popd
 cuml_commit=$(./scripts/check-version.py cuml)
 
 if [ ! -d "packages/cuml" ]; then
-    echo "Cloning cuml@{$RAPIDS_BRANCH}"
-    git clone https://github.com/rapidsai/cuml.git --branch $RAPIDS_BRANCH packages/cuml
+  echo "Cloning cuml@{$RAPIDS_BRANCH}"
+  git clone https://github.com/rapidsai/cuml.git --branch $RAPIDS_BRANCH packages/cuml
 fi
 
 pushd packages/cuml
@@ -79,8 +77,8 @@ popd
 raft_commit=$(./scripts/check-version.py raft_dask)
 
 if [ ! -d "packages/raft" ]; then
-    echo "Cloning raft@{$RAPIDS_BRANCH}"
-    git clone https://github.com/rapidsai/raft.git --branch $RAPIDS_BRANCH packages/raft
+  echo "Cloning raft@{$RAPIDS_BRANCH}"
+  git clone https://github.com/rapidsai/raft.git --branch $RAPIDS_BRANCH packages/raft
 fi
 
 pushd packages/raft
@@ -91,8 +89,8 @@ popd
 ucxx_commit=$(./scripts/check-version.py ucxx)
 
 if [ ! -d "packages/ucxx" ]; then
-    echo "Cloning ucxx@{$RAPIDS_BRANCH}"
-    git clone https://github.com/rapidsai/ucxx.git packages/ucxx
+  echo "Cloning ucxx@{$RAPIDS_BRANCH}"
+  git clone https://github.com/rapidsai/ucxx.git packages/ucxx
 fi
 
 pushd packages/ucxx
@@ -101,8 +99,8 @@ git checkout $ucxx_commit
 popd
 
 if [ ! -d "packages/dask-cuda" ]; then
-    echo "Cloning dask-cuda@{$RAPIDS_BRANCH}"
-    git clone https://github.com/rapidsai/dask-cuda.git --branch $RAPIDS_BRANCH packages/dask-cuda
+  echo "Cloning dask-cuda@{$RAPIDS_BRANCH}"
+  git clone https://github.com/rapidsai/dask-cuda.git --branch $RAPIDS_BRANCH packages/dask-cuda
 fi
 
 # Clone dask-cuda for tests, checking out the commit the installed wheel was
@@ -114,10 +112,9 @@ git fetch
 git checkout $dask_cuda_commit
 popd
 
-
 if [ ! -d "packages/dask-image" ]; then
-    echo "Cloning dask-image"
-    git clone https://github.com/dask/dask-image.git --depth 100 packages/dask-image
+  echo "Cloning dask-image"
+  git clone https://github.com/dask/dask-image.git --depth 100 packages/dask-image
 fi
 
 pushd packages/dask-image
@@ -129,13 +126,13 @@ popd
 # depth needs to be sufficient to reach the last tag, so that the package
 # versions are set correctly
 if [ ! -d "packages/dask" ]; then
-    echo "Cloning dask@${DASK_BRANCH}"
-    git clone https://github.com/dask/dask --depth 100 packages/dask --branch "${DASK_BRANCH}"
+  echo "Cloning dask@${DASK_BRANCH}"
+  git clone https://github.com/dask/dask --depth 100 packages/dask --branch "${DASK_BRANCH}"
 fi
 
 if [ ! -d "packages/distributed" ]; then
-    echo "Cloning distributed@${DASK_BRANCH}"
-    git clone https://github.com/dask/distributed --depth 100 packages/distributed --branch "${DASK_BRANCH}"
+  echo "Cloning distributed@${DASK_BRANCH}"
+  git clone https://github.com/dask/distributed --depth 100 packages/distributed --branch "${DASK_BRANCH}"
 fi
 
 pushd packages/dask
